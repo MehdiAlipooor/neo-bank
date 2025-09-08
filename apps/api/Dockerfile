@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY pacakge*.json/
 RUN npm install
+RUN npm install
 COPY ..
 
 EXPOSE 7000
