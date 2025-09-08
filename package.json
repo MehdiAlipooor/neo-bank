@@ -7,7 +7,9 @@
 	"scripts": {
 		"format-docs": "pnpm exec biome format --write",
 		"lint-docs": "pnpm exec biome lint --write",
-		"check-docs": "pnpm exec biome check --write"
+		"check-docs": "pnpm exec biome check --write",
+		"build-api": "./apps/api && tsc",
+		"test":""
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.3",
