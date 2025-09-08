@@ -1,0 +1,19 @@
+{
+	"name": "root",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"format-docs": "pnpm exec biome format --write",
+		"lint-docs": "pnpm exec biome lint --write",
+		"check-docs": "pnpm exec biome check --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.2.3",
+		"lerna": "^8.2.2"
+	},
+	"dependencies": {
+		"@types/amqplib": "^0.10.7"
+	}
+}

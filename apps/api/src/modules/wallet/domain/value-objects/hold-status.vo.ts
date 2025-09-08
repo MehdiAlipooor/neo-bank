@@ -1,0 +1,6 @@
+export enum HoldStatus {
+	ACTIVE = "ACTIVE",
+	CONSUMED = "CONSUMED",
+	RELEASED = "RELEASED",
+	EXPIRED = "EXPIRED",
+}

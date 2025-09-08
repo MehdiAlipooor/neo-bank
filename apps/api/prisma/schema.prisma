@@ -1,0 +1,177 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPPORT
+  AUDITOR
+  MERCHANT
+  GUEST
+}
+
+enum TransferHolds {
+  ACTIVE
+  CONSUMED
+  RELEASED
+  EXPIRED
+}
+
+enum LedgerTransactionType {
+  WITHDRAW_PENDING
+  WITHDRAW_SETTLED
+  TRANSFER
+}
+
+enum LedgerEntryAccoun {
+  WALLET
+  SETTLEMENT
+  FEE
+  SYSTEM
+}
+
+enum TransferStatus {
+  CREATED
+  RESERVED
+  SETTLED
+  FAILED
+  COMPLETED
+  
+}
+
+enum TransferDestIdentifier {
+  IBAN
+  card
+}
+
+enum TransferType {
+  DEPOSIT
+  WITHDRAW
+  INTERNAL
+}
+
+model User {
+  id              String         @id @default(uuid())
+  username        String?        @unique
+  profileImageUrl String?
+  phone           String         @unique
+  isActive        Boolean        @default(true)
+  isSuspended     Boolean        @default(false)
+  role            UserRole       @default(USER)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  refreshTokens   RefreshToken[]
+
+  wallet Wallet? @relation
+
+  @@index([createdAt])
+  @@index([isActive, isSuspended])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([revoked])
+  @@index([expiresAt])
+}
+
+model Wallet {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  balance       Decimal  @default(0.00)
+  cardNumber    String?  @unique
+  accountNumber String?  @unique
+  shabaNumber   String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  isRemoved     Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  ledgerEntries LedgerEntry[]
+  holds         Hold[]
+
+  @@index([cardNumber])
+  @@index([accountNumber])
+  @@index([shabaNumber])
+}
+
+model Transfer {
+  id             String         @id @default(uuid())
+  idempotencyKey String?        @unique
+  type           TransferType
+  amount         BigInt
+  currency       String         @default("IRR")
+  sourceWalletId String
+  destIdentifier String?
+  status         TransferStatus @default(CREATED)
+  externalRef    String?
+  metadata       Json?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([idempotencyKey, type, id])
+}
+
+model Hold {
+  id         String        @id @default(uuid())
+  walletId   String
+  wallet     Wallet        @relation(fields: [walletId], references: [id])
+  amount     BigInt
+  status     TransferHolds @default(ACTIVE)
+  transferId String?
+  createdAt  DateTime      @default(now())
+  expiresAt  DateTime?
+
+  @@index([walletId])
+}
+
+model LedgerTransaction {
+  id            String        @id @default(uuid())
+  transferId    String?
+  type          String
+  createdAt     DateTime      @default(now())
+  ledgerEntries LedgerEntry[]
+}
+
+model LedgerEntry {
+  id       String            @id @default(uuid())
+  txId     String
+  tx       LedgerTransaction @relation(fields: [txId], references: [id], onDelete: Cascade)
+  walletId String?
+  account  String
+  amount   BigInt
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  Wallet    Wallet?  @relation(fields: [walletId], references: [id])
+
+  @@index([walletId])
+  @@index([account])
+}
+
+model OutboxEvent {
+  id            String    @id @default(uuid())
+  aggregateId   String?
+  aggregateType String?
+  type          String
+  payload       Json
+  processed     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  processedAt   DateTime?
+}
