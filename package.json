@@ -8,7 +8,7 @@
 		"format-docs": "pnpm exec biome format --write",
 		"lint-docs": "pnpm exec biome lint --write",
 		"check-docs": "pnpm exec biome check --write",
-		"build-api": "./apps/api && tsc",
+		"build-api": "tsc ./apps/api",
 		"test":""
 	},
 	"devDependencies": {

@@ -19,11 +19,8 @@ jobs:
       with:
         node-version: '20.x'
 
-    - name: Install pnpm
-      run: npm install -g pnpm
-
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
 
     - name: Run build
-      run: pnpm build-api
+      run: npm run build-api
