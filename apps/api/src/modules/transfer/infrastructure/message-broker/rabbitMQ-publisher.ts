@@ -1,7 +1,4 @@
-import {
-	DEPOSIT_EXCHANGE,
-	getRabbitChannel,
-} from "../../../../../lib/queue/rabbitMq";
+import { DEPOSIT_EXCHANGE, getRabbitChannel } from "../../../../../lib/queue/rabbitMq";
 
 export class RabbitMqPublisher {
 	async publishDepositVerify(payload: { transferId: string }) {

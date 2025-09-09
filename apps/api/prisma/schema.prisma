@@ -101,6 +101,8 @@ model Wallet {
   updatedAt     DateTime @updatedAt
   isRemoved     Boolean  @default(false)
 
+  available    Decimal  @default(0.00) 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   ledgerEntries LedgerEntry[]

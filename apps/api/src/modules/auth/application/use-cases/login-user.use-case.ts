@@ -2,7 +2,6 @@ import { CreateWallet } from "../../../wallet/application/use-cases/create-walle
 import { WalletRepository } from "../../../wallet/infrastructure/repositories/wallet.repository";
 import { User } from "../../domain/entities/User";
 import { Phone } from "../../domain/value-objects/Phone";
-import type { LoginUserDTO } from "../dto/login-user.dto";
 import type { IAuthRepository } from "../ports/IAuthRepository";
 import type { IssueTokensUseCase } from "./issue-token.use-case";
 
@@ -15,7 +14,7 @@ export class LoginUserUseCase {
 	) {}
 
 	async execute(
-		dto: LoginUserDTO,
+		dto: any,
 	): Promise<{ user: User; accessToken: string; refreshToken: string }> {
 		let phone: Phone;
 		const username = dto.username;

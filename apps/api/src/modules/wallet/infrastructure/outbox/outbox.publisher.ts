@@ -1,4 +1,4 @@
-import { prisma } from "../../prismaClient";
+import prisma from "../../../../../lib/db/prisma";
 
 export const OutboxPublisher = {
 	async push(

@@ -4,7 +4,6 @@ import { RefreshTokenRepository } from "../../infrastructure/repositories/refres
 import { LoginUserUseCase } from "../../application/use-cases/login-user.use-case";
 import { IssueTokensUseCase } from "../../application/use-cases/issue-token.use-case";
 import { TokenService } from "../../domain/services/RefreshToken.service";
-import type { LoginUserDTO } from "../../application/dto/login-user.dto";
 
 const repo = new AuthRepository();
 
@@ -23,7 +22,7 @@ const issueTokensUseCase = new IssueTokensUseCase(
 const loginUser = new LoginUserUseCase(repo, issueTokensUseCase);
 
 export async function loginUserController(
-	req: FastifyRequest<{ Body: LoginUserDTO }>,
+	req: FastifyRequest<{ Body: any }>,
 	reply: FastifyReply,
 ) {
 	try {
