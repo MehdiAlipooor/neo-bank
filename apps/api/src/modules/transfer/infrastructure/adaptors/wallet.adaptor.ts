@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { WalletDTO } from "../../domain/dtos/wallet.dto";
 import { IWalletAdaptor } from "../../application/ports/wallet-adaptor.port";
 import { walletToDto } from "../../application/mappers/wallet-toDto.mapper";
@@ -10,6 +10,59 @@ import { LedgerTransactionType } from "../../domain/entities/ledger-entry.entity
 const prisma = new PrismaClient();
 
 export class WalletAdaptor implements IWalletAdaptor {
+	async increaseBalance(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void> {
+		await transaction.wallet.update({
+			where: { id: walletId },
+			data: {
+				balance: { increment: amount },
+			},
+		});
+	}
+
+	async increaseAvailable(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void> {
+		await transaction.wallet.update({
+			where: { id: walletId },
+			data: {
+				available: { increment: amount },
+			},
+		});
+	}
+
+	async decreaseBalance(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void> {
+		const response = await transaction.wallet.update({
+			where: { id: walletId },
+			data: {
+				balance: { decrement: amount },
+			},
+		});
+		console.log(response);
+	}
+
+	async decreaseAvailable(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void> {
+		await transaction.wallet.update({
+			where: { id: walletId },
+			data: {
+				available: { decrement: amount },
+			},
+		});
+	}
+
 	async internaleDeposit(
 		id: string,
 		amount: number,
@@ -50,18 +103,13 @@ export class WalletAdaptor implements IWalletAdaptor {
 		return walletToDto(record);
 	}
 
-	async findById(id: string): Promise<Wallet | null> {
+	async findById(id: string): Promise<any | null> {
 		const record = await prisma.wallet.findUnique({ where: { id } });
 		if (!record) {
 			return null;
 		}
 
-		return new Wallet(
-			record.id,
-			record.userId,
-			parseFloat(record.balance.toString()),
-			new Money(parseFloat(record.available.toString())),
-		);
+		return record;
 	}
 
 	async creditDeposit(

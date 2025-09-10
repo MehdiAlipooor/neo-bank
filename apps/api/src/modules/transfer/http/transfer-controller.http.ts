@@ -1,18 +1,21 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { LedgerRepository } from "../infrastructure/repositories/ledger.repository";
-import { RabbitMqPublisher } from "../infrastructure/message-broker/rabbitMQ-publisher";
 import { InitDeposit } from "../application/use-cases/init-deposit.use-case";
 import { WalletAdaptor } from "../infrastructure/adaptors/wallet.adaptor";
 import { ConfirmDeposit } from "../application/use-cases/confirm-deposit.use-case";
 import { InternalTransfer } from "../application/use-cases/internal-transfer.use-case";
 import { TransferRepository } from "../infrastructure/repositories/transfer.repository";
 import { HoldRepository } from "../../wallet/infrastructure/repositories/hold.repository";
+import { InitWithdraw } from "../application/use-cases/init-withdraw.use-case";
+import { WithdrawEvenetPublisher } from "../infrastructure/message-broker/withdraw-event-publisher";
+import { DepositEventPublisher } from "../infrastructure/message-broker/deposit-event-publisher";
 
 const ledgerRepo = new LedgerRepository();
-const publisher = new RabbitMqPublisher();
+const publisher = new DepositEventPublisher();
 const walletAdapter = new WalletAdaptor();
 const transferRepo = new TransferRepository();
 const holdRepo = new HoldRepository();
+const withdrawQueuePublisher = new WithdrawEvenetPublisher();
 
 export class TransferController {
 	static async initDeposit(
@@ -100,6 +103,45 @@ export class TransferController {
 			return reply.status(201).send({
 				message: result,
 				transferId: result?.id,
+			});
+		} catch (e: any) {
+			return reply.status(201).send({
+				message: e.message,
+			});
+		}
+	}
+
+	static async initWithdraw(
+		req: FastifyRequest<{
+			Body: {
+				souceWalletId: string;
+				destAccountId: string;
+				amount: number;
+				idempotencyKey: string;
+			};
+		}>,
+		reply: FastifyReply,
+	) {
+		try {
+			const { souceWalletId, destAccountId, amount, idempotencyKey } = req.body;
+
+			const usecase = new InitWithdraw(
+				holdRepo,
+				ledgerRepo,
+				withdrawQueuePublisher,
+				walletAdapter,
+			);
+
+			const result = await usecase.execute(
+				souceWalletId,
+				destAccountId,
+				amount,
+				idempotencyKey,
+			);
+
+			return reply.status(201).send({
+				message: result,
+				amount,
 			});
 		} catch (e: any) {
 			return reply.status(201).send({

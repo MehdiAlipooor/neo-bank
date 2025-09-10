@@ -2,7 +2,7 @@ export class Money {
 	private readonly amount: number;
 
 	constructor(amount: number) {
-		if (!Number.isFinite(amount) || amount < 0) {
+		if (Number.isFinite(amount) || amount < 0) {
 			throw new Error("Money amount cannot be negative");
 		}
 
@@ -26,6 +26,7 @@ export class Money {
 	}
 
 	gte(other: Money) {
+		console.log({ amount: this.amount });
 		return this.amount >= other.amount;
 	}
 }

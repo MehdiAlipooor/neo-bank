@@ -1,13 +1,13 @@
 import { randomUUID } from "node:crypto";
 import { Money } from "../../../wallet/domain/value-objects/Money";
-import { RabbitMqPublisher } from "../../infrastructure/message-broker/rabbitMQ-publisher";
 import { ILedgerRepository } from "../ports/ledger-repository.port";
 import { IWalletAdaptor } from "../ports/wallet-adaptor.port";
+import { DepositEventPublisher } from "../../infrastructure/message-broker/deposit-event-publisher";
 
 export class InitDeposit {
 	constructor(
 		private readonly ledgerRepo: ILedgerRepository,
-		private readonly qeuePublisher: RabbitMqPublisher,
+		private readonly qeuePublisher: DepositEventPublisher,
 		private readonly walletAdaptor: IWalletAdaptor,
 	) {}
 
@@ -42,9 +42,7 @@ export class InitDeposit {
 			txId,
 		});
 
-		// await this.qeuePublisher.publishDepositVerify({ transferId: id });
-		// const pub = new RabbitMqPublisher();
-		await this.qeuePublisher.publishDepositVerify({ transferId: id });
+		await this.qeuePublisher.fire({ transferId: id });
 
 		return { transferId: id, idempotencyKey, message: "Deposit initialized" };
 	}

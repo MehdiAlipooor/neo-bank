@@ -39,11 +39,18 @@ let connection: ChannelModel | null = null;
 let channel: Channel | null = null;
 
 // ثابت کردن نام exchange و queue
+export const WITHDRAW_EXCHANGE = "withdraw.verify.exchange";
+export const WITHDRAW_QUEUE = "withdraw.verify";
+
 export const DEPOSIT_EXCHANGE = "deposit.verify.exchange";
 export const DEPOSIT_QUEUE = "deposit.verify";
+
 export const DEPOSIT_DLX = "deposit.verify.dlx";
+export const WITHDRAW_DLX = "withdraw.verify.dlx";
 export const DEPOSIT_DLQ =
 	process.env.RABBITMQ_DEPOSIT_DLQ || "deposit.verify.dlq";
+export const WITHDRAW_DLQ =
+	process.env.RABBITMQ_DEPOSIT_DLQ || "withdraw.verify.dlq";
 
 export async function getRabbitChannel(): Promise<Channel> {
 	if (channel) return channel;
@@ -52,22 +59,33 @@ export async function getRabbitChannel(): Promise<Channel> {
 	connection = await amqp.connect(url);
 	channel = await connection.createChannel();
 
-	// ایجاد exchange و DLX
 	await channel.assertExchange(DEPOSIT_EXCHANGE, "direct", { durable: true });
 	await channel.assertExchange(DEPOSIT_DLX, "fanout", { durable: true });
+
+	await channel.assertExchange(WITHDRAW_EXCHANGE, "direct", { durable: true });
+	await channel.assertExchange(WITHDRAW_DLX, "fanout", { durable: true });
 
 	// DLQ
 	await channel.assertQueue(DEPOSIT_DLQ, { durable: true });
 	await channel.bindQueue(DEPOSIT_DLQ, DEPOSIT_DLX, "");
 
-	// Main queue با dead-letter
+	await channel.assertQueue(WITHDRAW_DLQ, { durable: true });
+	await channel.bindQueue(WITHDRAW_DLQ, DEPOSIT_DLX, "");
+
 	const queueArgs: Options.AssertQueue = {
 		durable: true,
 		deadLetterExchange: DEPOSIT_DLX,
 	};
+	const withDrawQueueArgs: Options.AssertQueue = {
+		durable: true,
+		deadLetterExchange: WITHDRAW_DLX,
+	};
 
 	await channel.assertQueue(DEPOSIT_QUEUE, queueArgs);
 	await channel.bindQueue(DEPOSIT_QUEUE, DEPOSIT_EXCHANGE, "route");
+
+	await channel.assertQueue(WITHDRAW_QUEUE, withDrawQueueArgs);
+	await channel.bindQueue(WITHDRAW_QUEUE, WITHDRAW_EXCHANGE, "route");
 
 	return channel;
 }

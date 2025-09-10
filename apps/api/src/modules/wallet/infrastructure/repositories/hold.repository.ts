@@ -17,6 +17,17 @@ export class HoldRepository implements IHoldRepository {
 		);
 	}
 
+	async findActiveById(id: string, tx?: any): Promise<Hold[]> {
+		const client = tx ?? prisma;
+		const rows = await client.hold.findMany({
+			where: { id, status: HoldStatus.ACTIVE },
+		});
+
+		return rows.map(
+			(r: Hold) => new Hold(r.id, r.walletId, r.amount, r.status, r.createdAt),
+		);
+	}
+
 	async create(hold: Hold, tx?: any): Promise<Hold> {
 		// const client = tx ?? prisma;
 		const rec = await tx.hold.create({

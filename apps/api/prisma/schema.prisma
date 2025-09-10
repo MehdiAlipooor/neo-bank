@@ -27,6 +27,9 @@ enum LedgerTransactionType {
   WITHDRAW_PENDING
   WITHDRAW_SETTLED
   TRANSFER
+  TRANSFER
+	DEPOSIT
+	WITHDRAW_FAILED
 }
 
 enum LedgerEntryAccoun {
@@ -34,6 +37,7 @@ enum LedgerEntryAccoun {
   SETTLEMENT
   FEE
   SYSTEM
+  EXTERNAL
 }
 
 enum TransferStatus {

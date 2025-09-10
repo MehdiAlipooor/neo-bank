@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { Wallet } from "../../../wallet/domain/entities/wallet";
 import { Money } from "../../../wallet/domain/value-objects/Money";
 import { WalletDTO } from "../../domain/dtos/wallet.dto";
@@ -26,4 +27,26 @@ export interface IWalletAdaptor {
 	): Promise<void>;
 
 	ebit(walletId: string, amount: Money): Promise<void>;
+
+	increaseBalance(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void>;
+	increaseAvailable(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void>;
+
+	decreaseBalance(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void>;
+	decreaseAvailable(
+		walletId: string,
+		amount: number,
+		transaction: Prisma.TransactionClient,
+	): Promise<void>;
 }

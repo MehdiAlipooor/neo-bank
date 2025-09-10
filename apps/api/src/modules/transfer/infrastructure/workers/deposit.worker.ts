@@ -1,6 +1,6 @@
 import { ConfirmDeposit } from "../../application/use-cases/confirm-deposit.use-case";
 import { WalletAdaptor } from "../adaptors/wallet.adaptor";
-import { RabbitMqConsumer } from "../message-broker/rabbitMQ-consumer";
+import { DepositEventConsumer } from "../message-broker/deposit-event-consumer";
 import { LedgerRepository } from "../repositories/ledger.repository";
 
 async function queryBank(
@@ -10,7 +10,7 @@ async function queryBank(
 }
 
 (async () => {
-	const consumer = new RabbitMqConsumer();
+	const consumer = new DepositEventConsumer();
 
 	await consumer.consume(async (msg, ack, retry) => {
 		const { transferId } = msg;
@@ -37,8 +37,6 @@ async function queryBank(
 				default:
 					retry();
 					break;
-				// console.error("Worker error:", err);
-				// retry();
 			}
 		} catch (err) {
 			console.error("Worker error:", err);

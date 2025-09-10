@@ -66,7 +66,9 @@ export class InternalTransfer {
 			metadata,
 		);
 
-		// 6️⃣ Create ledger entries domain objects
+		/**
+		 * @description Create ledger entries domain objects
+		 */
 		const ledgerEntries = [
 			new LedgerEntry(
 				randomUUID(),

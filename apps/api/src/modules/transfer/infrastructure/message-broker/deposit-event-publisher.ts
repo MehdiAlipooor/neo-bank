@@ -3,8 +3,8 @@ import {
 	getRabbitChannel,
 } from "../../../../../lib/queue/rabbitMq";
 
-export class RabbitMqPublisher {
-	async publishDepositVerify(payload: { transferId: string }) {
+export class DepositEventPublisher {
+	async fire(payload: { transferId: string }) {
 		const ch = await getRabbitChannel();
 
 		ch.publish(

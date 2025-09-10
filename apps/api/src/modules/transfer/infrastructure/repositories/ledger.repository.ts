@@ -39,12 +39,9 @@ export class LedgerRepository implements ILedgerRepository {
 			type: LedgerTransactionType;
 			entries: LedgerEntry[];
 		},
-		transactionRef?: any,
+		transactionRef: any,
 	): Promise<void> {
-		const dbClient = transactionRef ?? prisma;
-
-		// await dbClient.$transaction(async (tx) => {
-		await dbClient.ledgerTransaction.create({
+		await transactionRef.ledgerTransaction.create({
 			data: {
 				id: params.txId,
 				transferId: params.transferId,
@@ -85,7 +82,9 @@ export class LedgerRepository implements ILedgerRepository {
 	async findTransferByIdempotencyKey(
 		idempotencyKey: string,
 	): Promise<Transfer | null> {
-		const record = await prisma.transfer.findUnique({ where: { idempotencyKey } });
+		const record = await prisma.transfer.findUnique({
+			where: { idempotencyKey },
+		});
 		if (!record) return null;
 
 		return new Transfer(

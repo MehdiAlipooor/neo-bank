@@ -1,7 +1,6 @@
 import { TransferStatus } from "../enums/transfer-objects.enum";
 import { TransferTypes } from "../enums/transfer.enum";
 
-
 export class Transfer {
 	constructor(
 		public id: string,
