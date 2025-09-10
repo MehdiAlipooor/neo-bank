@@ -1,6 +1,9 @@
 import type { PrismaClient } from "@prisma/client";
 import type { ILedgerRepository } from "../../application/ports/ledger.repository.port";
-import type { LedgerEntry } from "../../domain/entities/ledger-entry.entity";
+import {
+	LedgerEntry,
+	LedgerTransactionType,
+} from "../../../transfer/domain/entities/ledger-entry.entity";
 
 export class LedgerRepository implements ILedgerRepository {
 	constructor(private prisma: PrismaClient) {}
@@ -31,7 +34,7 @@ export class LedgerRepository implements ILedgerRepository {
 			data: {
 				id: txId,
 				transferId: null,
-				type: "MANUAL",
+				type: LedgerTransactionType.TRANSFER,
 				ledgerEntries: {
 					create: entries.map((e) => ({
 						id: e.id,

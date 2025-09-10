@@ -1,7 +1,6 @@
 // import { IOutboxRepository } from "../../application/ports/outbox-repository.port";
 // import prisma from "../../../../../lib/db/prisma";
 
-
 // export class OutboxRepository implements IOutboxRepository {
 // 	async add(eventType: string, payload: any) {
 // 		await prisma.outbox.create({
@@ -30,4 +29,4 @@
 // 	}
 // }
 
-export {}
+export {};

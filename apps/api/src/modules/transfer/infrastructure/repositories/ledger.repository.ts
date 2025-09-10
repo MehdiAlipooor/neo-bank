@@ -1,7 +1,11 @@
 import prisma from "../../../../../lib/db/prisma";
 import { Money } from "../../../wallet/domain/value-objects/Money";
 import { ILedgerRepository } from "../../application/ports/ledger-repository.port";
-import { TransferEntity } from "../../domain/entities/Transfer.entity";
+import {
+	LedgerEntry,
+	LedgerTransactionType,
+} from "../../domain/entities/ledger-entry.entity";
+import { Transfer } from "../../domain/entities/transfer.entity";
 import { TransferStatus } from "../../domain/enums/transfer-objects.enum";
 import { TransferTypes } from "../../domain/enums/transfer.enum";
 
@@ -28,76 +32,74 @@ export class LedgerRepository implements ILedgerRepository {
 		});
 	}
 
-	async createLedgerTxWithEntry(params: {
-		txId: string;
-		transferId?: string | null;
-		type: string;
-		entry: {
-			id: string;
-			walletId?: string | null;
-			account: string;
-			amount: Money;
-			metadata?: any;
-		};
-	}): Promise<void> {
-		await prisma.$transaction(async (tx) => {
-			await tx.ledgerTransaction.create({
-				data: {
-					id: params.txId,
-					transferId: params.transferId,
-					type: params.type,
-					ledgerEntries: {
-						create: {
-							id: params.entry.id,
-							walletId: params.entry.walletId,
-							account: params.entry.account,
-							amount: params.entry.amount.value,
-							metadata: params.entry.metadata || null,
-						},
-					},
+	async createLedgerTxWithEntry(
+		params: {
+			txId: string;
+			transferId?: string | null;
+			type: LedgerTransactionType;
+			entries: LedgerEntry[];
+		},
+		transactionRef?: any,
+	): Promise<void> {
+		const dbClient = transactionRef ?? prisma;
+
+		// await dbClient.$transaction(async (tx) => {
+		await dbClient.ledgerTransaction.create({
+			data: {
+				id: params.txId,
+				transferId: params.transferId,
+				type: params.type,
+				ledgerEntries: {
+					create: params.entries.map((entry) => ({
+						id: entry.id,
+						walletId: entry.walletId,
+						account: entry.account,
+						amount: entry.amount.value,
+						metadata: entry.metadata || {},
+						type: LedgerTransactionType.TRANSFER,
+					})),
 				},
-			});
+			},
 		});
+		// });
 	}
 
-	async findTransferById(id: string): Promise<TransferEntity | null> {
-		const rec = await prisma.transfer.findUnique({ where: { id } });
-		if (!rec) return null;
+	async findTransferById(id: string): Promise<Transfer | null> {
+		const record = await prisma.transfer.findUnique({ where: { id } });
+		if (!record) return null;
 
-		return {
-			id: rec.id,
-			idempotencyKey: rec.idempotencyKey,
-			type: rec.type as any,
-			amount: rec.amount,
-			//   currency: rec.currency,
-			sourceWalletId: rec.sourceWalletId,
-			destIdentifier: rec.destIdentifier,
-			status: rec.status as any,
-			//   externalRef: rec.externalRef,
-			metadata: rec.metadata,
-			createdAt: rec.createdAt,
-			updatedAt: rec.updatedAt,
-		};
+		return new Transfer(
+			record.id,
+			record.type as any,
+			Number(record.amount),
+			record.sourceWalletId,
+			record.destIdentifier,
+			record.status as any,
+			record.idempotencyKey,
+			record.metadata,
+			record.createdAt,
+			record.updatedAt,
+		);
 	}
 
 	async findTransferByIdempotencyKey(
 		idempotencyKey: string,
-	): Promise<TransferEntity | null> {
-		const rec = await prisma.transfer.findUnique({ where: { idempotencyKey } });
-		if (!rec) return null;
+	): Promise<Transfer | null> {
+		const record = await prisma.transfer.findUnique({ where: { idempotencyKey } });
+		if (!record) return null;
 
-		return {
-			id: rec.id,
-			idempotencyKey: rec.idempotencyKey,
-			type: rec.type as any,
-			amount: rec.amount,
-			sourceWalletId: rec.sourceWalletId,
-			destIdentifier: rec.destIdentifier,
-			status: rec.status as any,
-			metadata: rec.metadata,
-			createdAt: rec.createdAt,
-			updatedAt: rec.updatedAt,
-		};
+		return new Transfer(
+			record.id,
+			record.type as any,
+			Number(record.amount),
+			record.sourceWalletId,
+			record.destIdentifier,
+			record.status as any,
+			record.idempotencyKey,
+			record.metadata,
+			record.createdAt,
+			record.updatedAt,
+		);
 	}
 
 	async updateTransferStatus(
@@ -108,29 +110,6 @@ export class LedgerRepository implements ILedgerRepository {
 			where: { id },
 			data: { status: status as any },
 		});
-	}
-
-	async findAllCreatedTransfers(limit?: number): Promise<TransferEntity[]> {
-		const rows = await prisma.transfer.findMany({
-			where: { status: "CREATED" },
-			orderBy: { createdAt: "asc" },
-			take: limit,
-		});
-
-		return rows.map((r) => ({
-			id: r.id,
-			idempotencyKey: r.idempotencyKey,
-			type: r.type as any,
-			amount: r.amount,
-			currency: r.currency,
-			sourceWalletId: r.sourceWalletId,
-			destIdentifier: r.destIdentifier,
-			status: r.status as any,
-			externalRef: r.externalRef,
-			metadata: r.metadata,
-			createdAt: r.createdAt,
-			updatedAt: r.updatedAt,
-		}));
 	}
 
 	async createDepositTransaction({
@@ -155,7 +134,7 @@ export class LedgerRepository implements ILedgerRepository {
 					amount: amount.value,
 					sourceWalletId: walletId,
 					idempotencyKey,
-					status: "CREATED",
+					status: TransferStatus.CREATED,
 				},
 			});
 
@@ -164,7 +143,7 @@ export class LedgerRepository implements ILedgerRepository {
 				data: {
 					id: txId,
 					transferId: id,
-					type: "deposit",
+					type: LedgerTransactionType.TRANSFER,
 				},
 			});
 
@@ -177,6 +156,7 @@ export class LedgerRepository implements ILedgerRepository {
 					account: `wallet:${walletId}`,
 					amount: amount.value,
 					metadata: { note: "init deposit pending" },
+					type: LedgerTransactionType.DEPOSIT,
 				},
 			});
 		});

@@ -158,6 +158,7 @@ model LedgerEntry {
   walletId String?
   account  String
   amount   BigInt
+  type     String
   metadata Json?
 
   createdAt DateTime @default(now())

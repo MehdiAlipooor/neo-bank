@@ -26,14 +26,17 @@ async function queryBank(
 					await confirm.execute(transferId, true);
 					ack();
 					console.log(`Deposit completed (transferId=${transferId})`);
+					break;
 
+				// Retry
 				case "failed":
 					await confirm.execute(transferId, false);
 					ack();
 					console.log(`Deposit failed (transferId=${transferId})`);
+					break;
 				default:
-					console.log("unknwos");
 					retry();
+					break;
 				// console.error("Worker error:", err);
 				// retry();
 			}

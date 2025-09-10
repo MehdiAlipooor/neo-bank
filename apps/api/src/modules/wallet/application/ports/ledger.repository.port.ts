@@ -1,4 +1,4 @@
-import type { LedgerEntry } from "../../domain/entities/ledger-entry.entity";
+import { LedgerEntry } from "../../../transfer/domain/entities/ledger-entry.entity";
 
 export interface ILedgerRepository {
 	createEntry(ledger: LedgerEntry, tx?: any): Promise<void>;

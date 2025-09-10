@@ -34,7 +34,7 @@ export class WalletRepository implements IWalletRepository {
 			record.id,
 			record.userId,
 			Number(record.balance),
-			new Money(Number(record.available))
+			new Money(Number(record.available)),
 		);
 	}
 
@@ -48,7 +48,7 @@ export class WalletRepository implements IWalletRepository {
 			record.id,
 			record.userId,
 			Number(record.balance),
-			new Money(Number(record.available))
+			new Money(Number(record.available)),
 		);
 	}
 
@@ -62,7 +62,7 @@ export class WalletRepository implements IWalletRepository {
 			record.id,
 			record.userId,
 			Number(record.balance),
-			new Money(Number(record.available))
+			new Money(Number(record.available)),
 		);
 	}
 }

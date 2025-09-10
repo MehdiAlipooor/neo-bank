@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Money } from "../../../wallet/domain/value-objects/Money";
 import { TransferStatus } from "../../domain/enums/transfer-objects.enum";
 import { ILedgerRepository } from "../ports/ledger-repository.port";
@@ -24,9 +25,11 @@ export class ConfirmDeposit {
 		}
 
 		// credit wallet through port (no direct Entity import)
-		await this.walletAdaptor.credit(
+		await this.walletAdaptor.creditDeposit(
 			transfer.sourceWalletId,
 			new Money(parseFloat(transfer.amount.toString())),
+			randomUUID(),
+			transferId,
 		);
 		await this.ledgerRepo.updateTransferStatus(
 			transferId,

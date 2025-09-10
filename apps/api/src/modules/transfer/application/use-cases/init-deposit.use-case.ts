@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Money } from "../../../wallet/domain/value-objects/Money";
 import { RabbitMqPublisher } from "../../infrastructure/message-broker/rabbitMQ-publisher";
 import { ILedgerRepository } from "../ports/ledger-repository.port";
@@ -15,13 +16,11 @@ export class InitDeposit {
 		amountNumber: number,
 		idempotencyKey: string,
 	) {
-		console.log("STEP_ONE");
 		const currentWallet = await this.walletAdaptor.findById(walletId);
 		if (!currentWallet) {
 			throw new Error("wallet_not_found");
 		}
 
-		console.log("STEP_TWO");
 		const existingTransfers =
 			await this.ledgerRepo.findTransferByIdempotencyKey(idempotencyKey);
 		if (existingTransfers) {
@@ -31,10 +30,9 @@ export class InitDeposit {
 			};
 		}
 
-		console.log("STEP_THREE");
-		const id = crypto.randomUUID();
+		const id = randomUUID();
 		const amount = new Money(amountNumber);
-		const txId = crypto.randomUUID();
+		const txId = randomUUID();
 
 		await this.ledgerRepo.createDepositTransaction({
 			id,
@@ -48,7 +46,6 @@ export class InitDeposit {
 		// const pub = new RabbitMqPublisher();
 		await this.qeuePublisher.publishDepositVerify({ transferId: id });
 
-		console.log("STEP_FIVE");
 		return { transferId: id, idempotencyKey, message: "Deposit initialized" };
 	}
 }

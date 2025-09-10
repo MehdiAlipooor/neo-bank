@@ -1,5 +1,9 @@
 import { Money } from "../../../wallet/domain/value-objects/Money";
-import { TransferEntity } from "../../domain/entities/Transfer.entity";
+import {
+	LedgerEntry,
+	LedgerTransactionType,
+} from "../../domain/entities/ledger-entry.entity";
+import { Transfer } from "../../domain/entities/transfer.entity";
 import { TransferStatus } from "../../domain/enums/transfer-objects.enum";
 
 export interface ILedgerRepository {
@@ -13,25 +17,21 @@ export interface ILedgerRepository {
 		idempotencyKey: string;
 	}): Promise<void>;
 
-	createLedgerTxWithEntry(params: {
-		txId: string;
-		transferId?: string | null;
-		type: string;
-		entry: {
-			id: string;
-			walletId?: string | null;
-			account: string;
-			amount: Money;
-			metadata?: any;
-		};
-	}): Promise<void>;
+	createLedgerTxWithEntry(
+		params: {
+			txId: string;
+			transferId?: string | null;
+			type: LedgerTransactionType;
+			entries: LedgerEntry[];
+		},
+		transactionRef?: any,
+	): Promise<void>;
 
-	findTransferById(id: string): Promise<TransferEntity | null>;
+	findTransferById(id: string): Promise<Transfer | null>;
 	findTransferByIdempotencyKey(
 		idempotencyKey: string,
-	): Promise<TransferEntity | null>;
+	): Promise<Transfer | null>;
 	updateTransferStatus(id: string, status: TransferStatus): Promise<void>;
-	findAllCreatedTransfers(limit?: number): Promise<TransferEntity[]>;
 
 	createDepositTransaction({
 		id,

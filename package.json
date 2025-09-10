@@ -9,7 +9,7 @@
 		"lint-docs": "pnpm exec biome lint --write",
 		"check-docs": "pnpm exec biome check --write",
 		"build-api": "tsc ./apps/api/src/server.ts",
-		"test":""
+		"test": ""
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.3",
