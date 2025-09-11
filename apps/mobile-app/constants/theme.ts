@@ -40,8 +40,8 @@ export const buttonSizes: Record<
 	},
 };
 export const themeColors: Record<ThemeColor, string> = {
-	Primary: "#3eed3b",
-	dark: "#0c0c0c",
+	Primary: "#0b6375",
+	dark: "#111727",
 };
 
 export const buttonVarients: Record<
@@ -50,7 +50,7 @@ export const buttonVarients: Record<
 > = {
 	Primary: {
 		backgroundColor: themeColors.Primary,
-		textColor: "#0c0c0c",
+		textColor: "#fff",
 	},
 	dark: {
 		backgroundColor: themeColors.Primary,
@@ -58,7 +58,13 @@ export const buttonVarients: Record<
 	},
 };
 
-export const buttonRadius: Record<ThemeRadius, number> = {
+export const sizes: Record<ThemeRadius, number> = {
+	sm: 4,
+	md: 8,
+	lg: 12,
+	xl: 16,
+};
+export const themRadius: Record<ThemeRadius, number> = {
 	sm: 4,
 	md: 8,
 	lg: 12,

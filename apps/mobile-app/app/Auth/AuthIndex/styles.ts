@@ -1,3 +1,4 @@
+import { themeColors } from "@/constants/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -16,14 +17,41 @@ export const styles = StyleSheet.create({
 		gap: 120,
 	},
 	text: {
-		color: "#fff",
-		fontWeight: 800,
-		fontSize: 40,
-		textAlign: "center",
+		color: themeColors.dark,
+		fontSize: 35,
+		textAlign: "right",
+		fontFamily: "bold",
+	},
+	subText: {
+		color: '#5d5d66',
+		fontSize: 16,
+		marginTop: 8,
+		textAlign: "right",
+		fontFamily: "medium",
 	},
 	contentContainer: {
 		flex: 1,
 		padding: 36,
 		alignItems: "center",
+	},
+	formBody: {
+		width: "100%",
+		justifyContent: "space-between",
+		flex: 1,
+	},
+	loginTitle: {
+		fontSize: 38,
+		color: themeColors.dark,
+		marginBottom: 24,
+		fontWeight: 600,
+		textAlign:'right',
+		fontFamily:'bold',
+		width:260,
+	},
+	brandText: {
+		fontSize: 38,
+		color: themeColors.Primary,
+		marginBottom: 24,
+		fontWeight: 600,
 	},
 });

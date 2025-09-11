@@ -4,3 +4,9 @@
 
 
 repository و interface های مرلبوط به hold و ledger باید به  transfer module انتقال پردا کنه
+
+
+
+
+Native app
+fix the keyboard issue when gorhom bottomSheet is open

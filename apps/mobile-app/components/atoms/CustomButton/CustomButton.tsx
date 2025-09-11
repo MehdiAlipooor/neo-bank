@@ -1,4 +1,4 @@
-import { buttonRadius, buttonSizes, buttonVarients } from "@/constants/theme";
+import { buttonSizes, buttonVarients, themRadius } from "@/constants/theme";
 import { FC } from "react";
 import { Pressable, Text } from "react-native";
 import { styles } from "./styles";
@@ -9,13 +9,12 @@ export const CustomButton: FC<ButtonProps> = ({
 	size = "sm",
 	title,
 	varient = "Primary",
-	raduis = "md",
+	raduis = "xl",
 	onPress,
 }) => {
 	const { height, padding } = buttonSizes[size];
 	const { backgroundColor, textColor } = buttonVarients[varient];
-	const borderRadius =
-		typeof raduis === "number" ? raduis : buttonRadius[raduis];
+	const borderRadius = typeof raduis === "number" ? raduis : themRadius[raduis];
 
 	return (
 		<Pressable
@@ -30,7 +29,7 @@ export const CustomButton: FC<ButtonProps> = ({
 				styles.button,
 			]}
 		>
-			{children ? children : <Text style={{ color: textColor }}>{title}</Text>}
+			{children ? children : <Text style={{ color: textColor, fontSize: 18, fontFamily:'regular' }}>{title}</Text>}
 		</Pressable>
 	);
 };

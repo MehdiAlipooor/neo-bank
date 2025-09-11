@@ -1,3 +1,5 @@
+import { queryClient } from "@/constants/reactQuery";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { FC, ReactNode } from "react";
 import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -8,9 +10,11 @@ type RootLayoutProps = {
 };
 export const RootLayout: FC<RootLayoutProps> = ({ children }) => {
 	return (
-		<GestureHandlerRootView style={{ flex: 1 }}>
-			<StatusBar barStyle="light-content" />
-			<SafeAreaProvider>{children}</SafeAreaProvider>
-		</GestureHandlerRootView>
+		<QueryClientProvider client={queryClient}>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<StatusBar barStyle="light-content" />
+				<SafeAreaProvider>{children}</SafeAreaProvider>
+			</GestureHandlerRootView>
+		</QueryClientProvider>
 	);
 };

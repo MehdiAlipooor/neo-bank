@@ -1,10 +1,13 @@
+import { themeColors } from "@/constants/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-	layoutWrapper: {
+	wrapper: {
 		flex: 1,
-		backgroundColor: "#ffffff",
+		position: "absolute",
+		bottom: -40,
 		justifyContent: "center",
 		alignItems: "center",
 	},
+	text: { fontSize: 12, color: themeColors.dark },
 });

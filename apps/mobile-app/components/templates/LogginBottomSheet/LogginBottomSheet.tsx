@@ -1,5 +1,4 @@
 import { BottomSheet, BottomSheetRef } from "@/components/molecules/BottomSeet";
-import { themeColors } from "@/constants/theme";
 import {
 	BottomSheetBackdrop,
 	BottomSheetBackdropProps,
@@ -51,7 +50,7 @@ export const LogginBottomSheetTemplate = forwardRef<
 				}
 			}}
 			backgroundStyle={{
-				backgroundColor: themeColors.dark,
+				backgroundColor: "#fff",
 			}}
 			handleIndicatorStyle={{
 				display: "none",
