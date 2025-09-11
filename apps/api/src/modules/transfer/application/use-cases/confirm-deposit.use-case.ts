@@ -24,7 +24,6 @@ export class ConfirmDeposit {
 			return { status: "failed" };
 		}
 
-		// credit wallet through port (no direct Entity import)
 		await this.walletAdaptor.creditDeposit(
 			transfer.sourceWalletId,
 			new Money(parseFloat(transfer.amount.toString())),

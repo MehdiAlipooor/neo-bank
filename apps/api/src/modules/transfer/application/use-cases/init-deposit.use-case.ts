@@ -23,6 +23,7 @@ export class InitDeposit {
 
 		const existingTransfers =
 			await this.ledgerRepo.findTransferByIdempotencyKey(idempotencyKey);
+
 		if (existingTransfers) {
 			return {
 				transferId: existingTransfers.id,

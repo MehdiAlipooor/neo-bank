@@ -59,7 +59,7 @@ export class TransferRepository implements ITransferRepository {
 
 	async getTransaction(callback: (trasaction: any) => any) {
 		return prisma.$transaction(async (tx) => {
-			return callback(tx); // tx is valid only inside this callback
+			return callback(tx);
 		});
 	}
 }

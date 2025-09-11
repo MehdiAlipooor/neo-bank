@@ -1,0 +1,16 @@
+{
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
+		"source.organizeImports": true
+	},
+	"emeraldwalk.runonsave": {
+		"commands": [
+			{
+				"match": ".*",
+				"cmd": "pnpm exec biome format --write ${file}"
+			}
+		]
+	}
+}

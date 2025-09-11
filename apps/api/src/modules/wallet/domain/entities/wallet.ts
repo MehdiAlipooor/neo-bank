@@ -45,10 +45,6 @@ export class Wallet {
 	}
 
 	applyHold(amount: Money) {
-		// if (!this.canPlacehold(amount)) {
-		// 	throw new Error("insufficient_available_balance");
-		// }
-
 		this.available = this.available.subtract(amount);
 	}
 

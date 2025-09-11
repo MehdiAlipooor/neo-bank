@@ -32,93 +32,94 @@ export class ConfirmWithdraw {
 		holdId: string,
 		idempotencyKey: string,
 	) {
-        const moneyAmount = new Money(amount);
-        let transferId: string = "";
-    
-        await prisma.$transaction(async (transaction: Prisma.TransactionClient) => {
-          /**
-           * @description Consume hold
-           */
-          const hold = new Hold(
-            holdId,
-            sourceWalletId,
-            new Money(amount),
-            HoldStatus.CONSUMED,
-          );
-          await this.holdRepo.update(hold, transaction);
-    
-          /**
-           * @description Decrease wallet balance
-           */
-          await this.walletAdapter.decreaseBalance(
-            sourceWalletId,
-            amount,
-            transaction,
-          );
-    
-          /**
-           * @description Create transfer (idempotency safe)
-           */
-          const existing = await this.transferRepo.findByIdempotencyKey(
-            idempotencyKey,
-            transaction,
-          );
+		const moneyAmount = new Money(amount);
+		let transferId: string = "";
 
-          const transfer =
-            existing ??
-            (await this.transferRepo.create(
-              new Transfer(
-                randomUUID(),
-                TransferTypes.WITHDRAW,
-                amount,
-                sourceWalletId,
-          
-                destAccountId,
-                TransferStatus.COMPLETED,
-                idempotencyKey,
-                {},
-              ),
-              transaction,
-            ));
-    
-          transferId = transfer.id;
-    
-          /**
-           * @description Ledger entries (double-entry: wallet debit, bank credit)
-           */
-          const ledgerEntries = [
-            new LedgerEntry(
-              randomUUID(),
-              transfer.id,
-              sourceWalletId,
-              LedgerEntryAccoun.WALLET,
-              moneyAmount,
-              { note: "withdraw debit" },
-            ),
-            new LedgerEntry(
-              randomUUID(),
-              transfer.id,
-              /**
-              * @ToDo we should have to store this 
-              */
-              sourceWalletId,
-              LedgerEntryAccoun.EXTERNAL,
-              moneyAmount,
-              { note: "withdraw credit" },
-            ),
-          ];
-    
-          await this.ledgerRepo.createLedgerTxWithEntry(
-            {
-              txId: randomUUID(),
-              transferId: transfer.id,
-              type: LedgerTransactionType.WITHDRAW_SETTLED,
-              entries: ledgerEntries,
-            },
-            transaction,
-          );
-        });
-    
-        return transferId;
+		await prisma.$transaction(async (transaction: Prisma.TransactionClient) => {
+			/**
+			 * @description Consume hold
+			 */
+			const hold = new Hold(
+				holdId,
+				sourceWalletId,
+				new Money(amount),
+				HoldStatus.CONSUMED,
+			);
+			await this.holdRepo.update(hold, transaction);
+
+			/**
+			 * @description Decrease wallet balance
+			 */
+			await this.walletAdapter.decreaseBalance(
+				sourceWalletId,
+				amount,
+				transaction,
+			);
+
+			/**
+			 * @description Create transfer (idempotency safe)
+			 */
+			const existing = await this.transferRepo.findByIdempotencyKey(
+				idempotencyKey,
+				transaction,
+			);
+
+			const transfer =
+				existing ??
+				(await this.transferRepo.create(
+					new Transfer(
+						randomUUID(),
+						TransferTypes.WITHDRAW,
+						amount,
+						sourceWalletId,
+
+						destAccountId,
+						TransferStatus.COMPLETED,
+						idempotencyKey,
+						{},
+					),
+					transaction,
+				));
+
+			transferId = transfer.id;
+
+			/**
+			 * @description Ledger entries (double-entry: wallet debit, bank credit)
+			 */
+			const ledgerEntries = [
+				new LedgerEntry(
+					randomUUID(),
+					transfer.id,
+					sourceWalletId,
+					LedgerEntryAccoun.WALLET,
+					moneyAmount,
+					{ note: "withdraw debit" },
+				),
+				new LedgerEntry(
+					randomUUID(),
+					transfer.id,
+
+					/**
+					 * @ToDo we should have to store this
+					 */
+					sourceWalletId,
+					LedgerEntryAccoun.EXTERNAL,
+					moneyAmount,
+					{ note: "withdraw credit" },
+				),
+			];
+
+			await this.ledgerRepo.createLedgerTxWithEntry(
+				{
+					txId: randomUUID(),
+					transferId: transfer.id,
+					type: LedgerTransactionType.WITHDRAW_SETTLED,
+					entries: ledgerEntries,
+				},
+				transaction,
+			);
+		});
+
+		return transferId;
 	}
 }
