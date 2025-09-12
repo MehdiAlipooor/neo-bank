@@ -1,12 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text } from "react-native";
 import { AuthScreen } from "./Auth";
+import { MainScreen } from "./Main/Main.screen";
 
 const Stack = createNativeStackNavigator();
-
-function HomeScreen() {
-	return <Text>HomeScreen</Text>;
-}
 
 const screens = {
 	Auth: {
@@ -17,8 +13,8 @@ const screens = {
 			gestureEnabled: true,
 		},
 	},
-	Home: {
-		component: HomeScreen,
+	Main: {
+		component: MainScreen,
 		options: {
 			lazy: true,
 			// Better performance in case of deep navigations
@@ -30,7 +26,7 @@ const screens = {
 export const Nav = () => {
 	return (
 		<Stack.Navigator
-			initialRouteName="Auth"
+			initialRouteName="Main"
 			screenOptions={{
 				headerShown: false,
 				contentStyle: { flex: 1 },

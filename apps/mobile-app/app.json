@@ -20,7 +20,8 @@
 			},
 			"edgeToEdgeEnabled": true,
 			"predictiveBackGestureEnabled": false,
-			"softwareKeyboardLayoutMode": "resize"
+			"softwareKeyboardLayoutMode": "resize",
+			"package": "com.emahdi1297.financemobileapp"
 		},
 		"web": {
 			"output": "static",

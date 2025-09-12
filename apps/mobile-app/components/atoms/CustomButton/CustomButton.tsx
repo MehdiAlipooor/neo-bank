@@ -29,7 +29,13 @@ export const CustomButton: FC<ButtonProps> = ({
 				styles.button,
 			]}
 		>
-			{children ? children : <Text style={{ color: textColor, fontSize: 18, fontFamily:'regular' }}>{title}</Text>}
+			{children ? (
+				children
+			) : (
+				<Text style={{ color: textColor, fontSize: 18, fontFamily: "regular" }}>
+					{title}
+				</Text>
+			)}
 		</Pressable>
 	);
 };

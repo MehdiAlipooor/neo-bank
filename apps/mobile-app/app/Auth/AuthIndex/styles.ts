@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
 		fontFamily: "bold",
 	},
 	subText: {
-		color: '#5d5d66',
+		color: "#5d5d66",
 		fontSize: 16,
 		marginTop: 8,
 		textAlign: "right",
@@ -44,9 +44,9 @@ export const styles = StyleSheet.create({
 		color: themeColors.dark,
 		marginBottom: 24,
 		fontWeight: 600,
-		textAlign:'right',
-		fontFamily:'bold',
-		width:260,
+		textAlign: "right",
+		fontFamily: "bold",
+		width: 260,
 	},
 	brandText: {
 		fontSize: 38,

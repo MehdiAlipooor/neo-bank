@@ -12,7 +12,14 @@ export const InputItem: FC<InputItemProps> = ({ label, parent }) => {
 	return (
 		<View>
 			{label ? (
-				<Text style={{ color: themeColors.dark, marginBottom: 4, fontFamily:'medium', textAlign:'right' }}>
+				<Text
+					style={{
+						color: themeColors.dark,
+						marginBottom: 4,
+						fontFamily: "medium",
+						textAlign: "right",
+					}}
+				>
 					{label}
 				</Text>
 			) : null}

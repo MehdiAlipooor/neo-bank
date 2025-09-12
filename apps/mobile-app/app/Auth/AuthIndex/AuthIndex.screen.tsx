@@ -25,12 +25,12 @@ export const AuthIndexScreen = () => {
 			<View style={styles.footerWrapper}>
 				<View>
 					<Text style={[styles.text]}>
-						هدف گزاری برای 
-						{" "}
-						<Text style={{color: themeColors.Primary}}>پیشرفت</Text>
+						هدف گزاری برای{" "}
+						<Text style={{ color: themeColors.Primary }}>پیشرفت</Text>
 					</Text>
 					<Text style={[styles.subText]}>
-						تمام امور مالی تون رو توی یکجا مدیریت کنید، پس انداز کنید، گزارش ها رو ببینید و هدف گزاری کنید
+						تمام امور مالی تون رو توی یکجا مدیریت کنید، پس انداز کنید، گزارش ها
+						رو ببینید و هدف گزاری کنید
 					</Text>
 				</View>
 				<CustomButton
@@ -45,14 +45,10 @@ export const AuthIndexScreen = () => {
 			<LogginBottomSheetTemplate ref={bottomSheetRef}>
 				<View style={styles.formBody}>
 					<View>
-						<View style={{alignItems:'flex-end'}}>
-						<Text style={[styles.loginTitle]}>
-							وارد اکانت 
-							{" "}
-							<Text style={styles.brandText}>برند</Text>
-							{" "}
-							بشید
-						</Text>
+						<View style={{ alignItems: "flex-end" }}>
+							<Text style={[styles.loginTitle]}>
+								وارد اکانت <Text style={styles.brandText}>برند</Text> بشید
+							</Text>
 						</View>
 						<LoginForm />
 					</View>

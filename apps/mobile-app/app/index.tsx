@@ -25,7 +25,6 @@ export default function Index() {
 		}
 	}, [loaded, error]);
 
-
 	return (
 		<AppContext.Provider
 			value={{
