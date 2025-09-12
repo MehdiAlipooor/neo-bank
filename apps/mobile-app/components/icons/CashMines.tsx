@@ -30,7 +30,10 @@ export function CashMinusIcon({ size = 24, color = "black", ...props }: Props) {
 				stroke={themeColors.Primary}
 				d="M12 19h-4a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v5"
 			/>
-			<Path stroke={themeColors.Primary} d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+			<Path
+				stroke={themeColors.Primary}
+				d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"
+			/>
 			<Path stroke={themeColors.dark} d="M16 19h6" />
 		</Svg>
 	);

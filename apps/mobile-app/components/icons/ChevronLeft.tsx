@@ -1,4 +1,3 @@
-import { themeColors } from "@/constants/theme";
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 
@@ -8,7 +7,7 @@ type Props = {
 	strokeWidth?: number;
 };
 
-export function CategoryPlusIcon({
+export function ChevronLeftIcon({
 	size = 24,
 	color = "black",
 	...props
@@ -25,15 +24,10 @@ export function CategoryPlusIcon({
 			strokeLinejoin="round"
 			{...props}
 		>
+			{/* Invisible bounding box */}
 			<Path stroke="none" d="M0 0h24v24H0z" fill="none" />
-
-			<Path stroke={themeColors.dark} d="M4 4h6v6h-6z" />
-
-			<Path stroke={themeColors.dark} d="M14 4h6v6h-6z" />
-
-			<Path stroke={themeColors.dark} d="M4 14h6v6h-6z" />
-
-			<Path stroke={themeColors.Primary} d="M20 17h-6m3 -3v6" />
+			{/* Chevron left */}
+			<Path d="M15 6l-6 6l6 6" />
 		</Svg>
 	);
 }

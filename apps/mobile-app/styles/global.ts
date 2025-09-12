@@ -11,6 +11,8 @@ export const globalStyles = StyleSheet.create({
 	wrap: { flexWrap: "wrap" },
 	noWrap: { flexWrap: "nowrap" },
 
+	center: { alignItems: "center", justifyContent: "center" },
+
 	/** Alignment (cross axis) */
 	alignStart: { alignItems: "flex-start" },
 	alignCenter: { alignItems: "center" },

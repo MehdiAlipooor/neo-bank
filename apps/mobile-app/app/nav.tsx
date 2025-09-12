@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthScreen } from "./Auth";
+import { DepositScreen } from "./Deposit";
 import { MainScreen } from "./Main/Main.screen";
 
 const Stack = createNativeStackNavigator();
@@ -21,12 +22,20 @@ const screens = {
 			gestureEnabled: true,
 		},
 	},
+	Deposit: {
+		component: DepositScreen,
+		options: {
+			lazy: true,
+			// Better performance in case of deep navigations
+			gestureEnabled: true,
+		},
+	},
 };
 
 export const Nav = () => {
 	return (
 		<Stack.Navigator
-			initialRouteName="Main"
+			initialRouteName="Deposit"
 			screenOptions={{
 				headerShown: false,
 				contentStyle: { flex: 1 },

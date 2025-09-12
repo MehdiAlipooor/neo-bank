@@ -53,8 +53,8 @@ export const buttonVarients: Record<
 		textColor: "#fff",
 	},
 	dark: {
-		backgroundColor: themeColors.Primary,
-		textColor: "#0c0c0c",
+		backgroundColor: themeColors.dark,
+		textColor: "#fff",
 	},
 };
 

@@ -3,7 +3,6 @@ import { TermsOfUseButton } from "@/components/molecules/TermsOfuseButton";
 import { LoginForm } from "@/components/organisms/LoginForm";
 import { LogginBottomSheetTemplate } from "@/components/templates/LogginBottomSheet";
 import { themeColors } from "@/constants/theme";
-import { useDanaFonts } from "@/hooks/useDataFonts";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useRef } from "react";
 import { Image, Text, View } from "react-native";
@@ -11,8 +10,6 @@ import { styles } from "./styles";
 
 export const AuthIndexScreen = () => {
 	const bottomSheetRef = useRef<BottomSheet>(null);
-
-	useDanaFonts();
 
 	return (
 		<View style={styles.wrapper}>
