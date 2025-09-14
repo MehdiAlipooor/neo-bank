@@ -11,5 +11,5 @@ export type BottomSheetRef = {
 	expand: () => void;
 	collapse: () => void;
 	close: () => void;
-	getHeight: () => number;
+	getHeight: () => number | undefined;
 };

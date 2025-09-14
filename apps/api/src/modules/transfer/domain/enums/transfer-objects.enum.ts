@@ -1,7 +1,0 @@
-export enum TransferStatus {
-	CREATED = "CREATED",
-	PENDING = "PENDING",
-	COMPLETED = "COMPLETED",
-	FAILED = "FAILED",
-	RESERVED = "RESERVED",
-}

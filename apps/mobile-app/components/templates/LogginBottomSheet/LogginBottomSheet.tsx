@@ -38,6 +38,7 @@ export const LogginBottomSheetTemplate = forwardRef<
 		expand: () => sheetRef.current?.expand(),
 		collapse: () => sheetRef.current?.collapse(),
 		close: () => sheetRef.current?.close(),
+		getHeight: () => undefined,
 	}));
 
 	return (

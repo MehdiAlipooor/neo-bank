@@ -84,6 +84,7 @@ const InputBox = () => {
 				minimumTrackTintColor={themeColors.Primary}
 				maximumTrackTintColor="#eee"
 				thumbTintColor={themeColors.Primary}
+				
 			/>
 		);
 	}, [numericValue]);

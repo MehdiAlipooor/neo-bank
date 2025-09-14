@@ -1,1 +1,1 @@
-export type ThemeRadius = "sm" | "md" | "lg" | "xl";
+export type ThemeRadius = "sm" | "md" | "lg" | "xl" | "xlg";

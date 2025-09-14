@@ -63,12 +63,14 @@ export const sizes: Record<ThemeRadius, number> = {
 	md: 8,
 	lg: 12,
 	xl: 16,
+	xlg: 24,
 };
 export const themRadius: Record<ThemeRadius, number> = {
 	sm: 4,
 	md: 8,
 	lg: 12,
 	xl: 16,
+	xlg: 24,
 };
 
 export const Colors = {

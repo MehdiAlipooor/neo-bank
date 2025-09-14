@@ -4,7 +4,7 @@ import { FC } from "react";
 import { Text, View } from "react-native";
 import { PageTitleProps } from "./types";
 
-export const PageTItle: FC<PageTitleProps> = ({ hideBackButton, title }) => {
+export const PageTitle: FC<PageTitleProps> = ({ hideBackButton, title }) => {
 	return (
 		<View
 			style={[
@@ -13,15 +13,17 @@ export const PageTItle: FC<PageTitleProps> = ({ hideBackButton, title }) => {
 				globalStyles.alignCenter,
 			]}
 		>
-			<View style={{ maxWidth: "33%", minWidth: "25%" }}>
-				{!hideBackButton ? <BackButton /> : null}
-			</View>
+			<View style={{ maxWidth: "33%", minWidth: "25%" }}></View>
 			<View>
-				<Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 18 }}>
+				<Text style={{ textAlign: "center", fontFamily: "bold", fontSize: 18 }}>
 					{title}
 				</Text>
 			</View>
-			<View style={{ maxWidth: "33%", minWidth: "25%" }}></View>
+			<View
+				style={{ maxWidth: "33%", minWidth: "25%", alignItems: "flex-end" }}
+			>
+				{!hideBackButton ? <BackButton /> : null}
+			</View>
 		</View>
 	);
 };

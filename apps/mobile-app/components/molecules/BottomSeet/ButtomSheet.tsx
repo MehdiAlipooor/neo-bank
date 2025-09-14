@@ -13,7 +13,7 @@ import React, {
 	useMemo,
 	useRef,
 } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { BottomSheetRef } from "./types";
 
 export const BottomSheet = forwardRef<BottomSheetRef, GorHomBottomSheetProps>(
@@ -22,22 +22,38 @@ export const BottomSheet = forwardRef<BottomSheetRef, GorHomBottomSheetProps>(
 
 		const { snapPoints, backgroundStyle, children, ...rest } = props;
 
-		// expose imperative methods to parent
+		const snapPointsMemo = useMemo(() => snapPoints, [snapPoints]);
+
+		const sheeViewHeight = useMemo(() => {
+			let heightPercentage = "0";
+			if (
+				Array.isArray(snapPointsMemo) &&
+				typeof snapPointsMemo[1] === "string"
+			) {
+				const snapPoint = snapPointsMemo[1] as string;
+				heightPercentage = snapPoint.endsWith("%")
+					? snapPoint.slice(0, -1)
+					: snapPoint;
+			}
+
+			return (
+				(Dimensions.get("window").height * parseFloat(heightPercentage)) / 100
+			);
+		}, [snapPoints]);
+
 		useImperativeHandle(ref, () => ({
 			expand: () => bottomSheetRef.current?.expand(),
 			collapse: () => bottomSheetRef.current?.collapse(),
 			close: () => bottomSheetRef.current?.close(),
+			getHeight: () => sheeViewHeight,
 		}));
-
-		const snapPointsMemo = useMemo(() => snapPoints, [snapPoints]);
 
 		const renderBackdrop = useCallback(
 			(props: GorHomBottomSheetBackdropProps) => (
 				<GorHomBottomSheetBackdrop
-					{...props}
 					disappearsOnIndex={0}
 					appearsOnIndex={1}
-					// opacity={}
+					{...props}
 				/>
 			),
 			[],
