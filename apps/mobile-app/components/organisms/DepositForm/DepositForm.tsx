@@ -42,9 +42,16 @@ export const DepositForm = ({
 					</Text>
 					<InputBox />
 				</View>
-					<View style={{width:'100%', marginLeft:24, position: "absolute", bottom: 0 }}>
-						<CustomButton varient="dark" size="lg" title="تایید" />
-					</View>
+				<View
+					style={{
+						width: "100%",
+						marginLeft: 24,
+						position: "absolute",
+						bottom: 0,
+					}}
+				>
+					<CustomButton varient="dark" size="lg" title="تایید" />
+				</View>
 			</View>
 		</BottomSheetView>
 	);
@@ -84,7 +91,6 @@ const InputBox = () => {
 				minimumTrackTintColor={themeColors.Primary}
 				maximumTrackTintColor="#eee"
 				thumbTintColor={themeColors.Primary}
-				
 			/>
 		);
 	}, [numericValue]);
