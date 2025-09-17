@@ -111,7 +111,7 @@ model Account {
 model Wallet {
   id              String   @id @default(uuid())
   walletKey       String   @unique
-  accountId       String
+  accountId       String   @unique
   walletType      String
   balance         Decimal  @default(0.00)
   available       Decimal  @default(0.00)

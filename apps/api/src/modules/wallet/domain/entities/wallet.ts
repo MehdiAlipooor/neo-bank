@@ -1,13 +1,14 @@
 import { WalletPolicy } from "../policies/wallet.policy";
+import { Money } from "../value-objects/money.value-object";
 
 export abstract class Wallet {
 	constructor(
 		public walletKey: string,
 		public accountId: string,
-		public walletType: string,
-		public balance: number,
-		public available: number,
-		public policy: WalletPolicy,
+		public walletType: "MAIN" | "CHEQUE" | "SAVING-POT",
+		public balance: Money,
+		public available: Money,
+		public policy?: WalletPolicy,
 	) {}
 
 	abstract deposit(amount: number, meta?: any): Promise<void>;
@@ -15,6 +16,11 @@ export abstract class Wallet {
 	abstract transfer(to: Wallet, amount: number, meta?: any): Promise<void>;
 
 	getAvailableBalance(): number {
-		return this.available;
+		return this.available.value;
+	}
+
+	/** Domain events can be raised here if needed */
+	protected addDomainEvent(event: any) {
+		// push to internal event list for publishing
 	}
 }

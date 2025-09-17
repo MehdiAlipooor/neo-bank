@@ -1,4 +1,6 @@
-import { CreateWallet } from "../../../wallet/application/use-cases/create-wallet";
+import { randomUUID } from "node:crypto";
+import prisma from "../../../../../lib/db/prisma";
+import { CreateWallet } from "../../../wallet/application/use-cases/create-wallet.use-case";
 import { WalletRepository } from "../../../wallet/infrastructure/repositories/wallet.repository";
 import { User } from "../../domain/entities/User";
 import { Phone } from "../../domain/value-objects/Phone";
@@ -36,14 +38,23 @@ export class LoginUserUseCase {
 		 * @description If no user, the user will be generated, and an empty wallet will be generated too
 		 */
 		if (!user) {
-			const userSchema = User.create(username, phone.getValue());
+			const userSchema = User.create(username, phone.getValue(), randomUUID());
 			await this.authRepo.save(userSchema);
 			user = userSchema as User;
 
-			// Step 3: create wallet for persisted user
+			const account = await prisma.account.create({
+				data: {
+				  accountKey: randomUUID(),
+				  userId: user.id,
+				  type: 'PERSONAL'
+				}
+			  })
+			  
+	
 			const createWallet = new CreateWallet(walletRepo);
-			await createWallet.execute({ userId: user.id });
+			await createWallet.execute({accountId: account.id, userId: user.id, walletName:'', walletKey: randomUUID()});
 		}
+	
 
 		const tokens = await this.issueTokenUseCase.execute((user as User)?.id);
 

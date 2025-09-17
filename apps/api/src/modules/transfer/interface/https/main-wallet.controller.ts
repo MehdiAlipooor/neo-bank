@@ -27,7 +27,12 @@ export class MainWalletController {
 		const withdrawUC = new WithdrawMainUseCase(service);
 		const internalUC = new InternalTransferMainUseCase(service);
 
-		const workflow = new MainWalletTransferWorkflow(depositUC, withdrawUC, internalUC, this.publisher);
+		const workflow = new MainWalletTransferWorkflow(
+			depositUC,
+			withdrawUC,
+			internalUC,
+			this.publisher,
+		);
 		// const result = await workflow.deposit(wallet, Number(amount));
 		// res.json(result);
 	}

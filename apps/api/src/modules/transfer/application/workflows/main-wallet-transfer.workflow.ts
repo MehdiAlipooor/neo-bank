@@ -9,7 +9,7 @@ export class MainWalletTransferWorkflow {
 		private depositUC: DepositMainUseCase,
 		private withdrawUC: WithdrawMainUseCase,
 		private internalUC: InternalTransferMainUseCase,
-		private eventPublisher: RabbitMQPublisher
+		private eventPublisher: RabbitMQPublisher,
 	) {}
 
 	async deposit(wallet: Wallet, amount: number) {
@@ -18,22 +18,21 @@ export class MainWalletTransferWorkflow {
 		await this.eventPublisher.publish("wallet.main.deposit.created", {
 			walletKey: wallet.walletKey,
 			amount,
-			transferKey: 'transfer-key',
-		  });
-	  
+			transferKey: "transfer-key",
+		});
 
 		return transfer;
 	}
 
 	async withdraw(wallet: Wallet, amount: number) {
 		const transfer = await this.withdrawUC.execute(wallet, amount);
-		
+
 		await this.eventPublisher.publish("wallet.main.withdraw.pending", {
 			walletKey: wallet.walletKey,
 			amount,
-			transferKey: 'transfer.transferKey',
-		  });
-	  
+			transferKey: "transfer.transferKey",
+		});
+
 		return transfer;
 	}
 
@@ -43,8 +42,8 @@ export class MainWalletTransferWorkflow {
 			sourceWalletKey: source.walletKey,
 			destWalletKey: dest.walletKey,
 			amount,
-			transferKey: 'transfer.transferKey',
-		  });
+			transferKey: "transfer.transferKey",
+		});
 		return transfer;
 	}
 }

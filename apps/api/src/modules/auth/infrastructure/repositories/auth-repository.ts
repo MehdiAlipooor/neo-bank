@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import prisma from "../../../../../lib/db/prisma";
 import type { IAuthRepository } from "../../application/ports/IAuthRepository";
 import type { RefreshToken } from "../../domain/entities/RefreshToken";
@@ -40,7 +41,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async save(user: User): Promise<void> {
 		const response = await prisma.user.create({
-			data: { ...user },
+			data: { ...user, userKey: randomUUID() },
 		});
 
 		console.log(response);

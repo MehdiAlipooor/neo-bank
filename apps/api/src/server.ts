@@ -1,16 +1,14 @@
 import "dotenv/config";
 import Fastify from "fastify";
 import { authModule } from "./modules/auth/auth.module";
-import { walletRoutes } from "./modules/wallet/wallet-module";
-import { transferModule } from "./modules/transfer/module";
+import { walletModule } from "./modules/wallet/wallet.module";
 
 const app = Fastify({ logger: true });
 
 const port = (process.env.PORT || 7000) as number;
 
 app.register(authModule);
-app.register(walletRoutes);
-app.register(transferModule);
+app.register(walletModule);
 
 const start = async () => {
 	try {
