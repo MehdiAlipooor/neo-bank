@@ -9,7 +9,10 @@ export class BaseWalletService<T extends Wallet> {
 	}
 
 	async deposit(amount: number, _meta?: any) {
-		if (!this.wallet.policy?.canDeposit?.(this.walletType)) {
+		if (
+			!this.wallet.policy?.canDeposit?.(this.walletType) &&
+			this.walletType !== "MAIN"
+		) {
 			throw new Error("Deposit is not allowed for this wallet type");
 		}
 

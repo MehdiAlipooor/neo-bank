@@ -5,4 +5,5 @@ export interface TransferRepositoryPort {
 	create(transfer: Transfer): Promise<Transfer>;
 	updateStatus(id: string, status: TransferStatus): Promise<void>;
 	findById(id: string, status: TransferStatus): Promise<Transfer | null>;
+	existsByIdempotencyKey(idempotencyKey: string): Promise<boolean>;
 }

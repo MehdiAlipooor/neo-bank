@@ -28,6 +28,7 @@ export class AuthRepository implements IAuthRepository {
 
 		return new User(
 			user.id,
+			randomUUID(),
 			user.username || "",
 			user.profileImageUrl || "",
 			user.phone,

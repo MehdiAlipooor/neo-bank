@@ -1,10 +1,17 @@
+import { randomUUID } from "node:crypto";
 import prisma from "../../../../../lib/db/prisma";
 import type { TransferRepositoryPort } from "../../application/ports/transfer-repository.port";
 import { Transfer } from "../../domain/entites/transfer.entity";
 
 export class TransferRepository implements TransferRepositoryPort {
+	async existsByIdempotencyKey(idempotencyKey: string): Promise<boolean> {
+		const record = await prisma.transfer.findUnique({
+			where: { idempotencyKey },
+		});
+		return !!record;
+	}
 	async create(transfer: Transfer): Promise<Transfer> {
-		if (!transfer.destinationWalletKey) {
+		if (transfer.type !== "DEPOSIT" && !transfer.destinationWalletKey) {
 			throw new Error("destinationWalletKey_is_required");
 		}
 
@@ -12,12 +19,13 @@ export class TransferRepository implements TransferRepositoryPort {
 			data: {
 				id: transfer.id,
 				sourceWalletKey: transfer.sourceWalletKey,
-				destinationWalletKey: transfer.destinationWalletKey,
+				destinationWalletKey:
+					transfer.destinationWalletKey ?? "DEPOSIT_CURRENT_WALLET",
 				type: transfer.type,
 				amount: transfer.amount,
 				status: transfer.status,
 				metadata: transfer.metadata,
-				transferKey: "",
+				transferKey: randomUUID(),
 			},
 		});
 
@@ -41,7 +49,7 @@ export class TransferRepository implements TransferRepositoryPort {
 			row.id,
 			row.sourceWalletKey,
 			row.type,
-			row.amount,
+			Number(row.amount),
 			row.status,
 			row.destinationWalletKey,
 			row.metadata,

@@ -26,7 +26,6 @@ export class Money {
 	}
 
 	gte(other: Money) {
-		console.log({ amount: this.amount });
 		return this.amount >= other.amount;
 	}
 }

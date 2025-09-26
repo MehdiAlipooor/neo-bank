@@ -156,7 +156,7 @@ model Hold {
 model Transfer {
   id                   String         @id @default(uuid())
   transferKey          String         @unique
-  idempotencyKey       String?        @unique
+  idempotencyKey       String        @unique
   type                 TransferType
   amount               BigInt
   currency             String         @default("IRR")

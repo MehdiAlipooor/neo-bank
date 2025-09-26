@@ -1,10 +1,11 @@
 import prisma from "../../../../../lib/db/prisma";
 import type { WalletRepositoryPort } from "../../application/ports/wallet-repository.port";
 import { MainWallet } from "../../domain/entities/main-wallet.entity";
+import type { Wallet } from "../../domain/entities/wallet";
 import { Money } from "../../domain/value-objects/money.value-object";
 
 export class WalletRepository implements WalletRepositoryPort {
-	async create(wallet: MainWallet): Promise<MainWallet> {
+	async create(wallet: Wallet): Promise<Wallet> {
 		const record = await prisma.wallet.create({
 			data: {
 				walletKey: wallet.walletKey,
@@ -15,7 +16,21 @@ export class WalletRepository implements WalletRepositoryPort {
 			},
 		});
 
-		console.log(record);
+		return new MainWallet(
+			record.walletKey,
+			record.accountId,
+			new Money(Number(record.balance)),
+			new Money(Number(record.available)),
+		);
+	}
+
+	async findByWalletKey(walletKey: string): Promise<MainWallet | null> {
+		const record = await prisma.wallet.findUnique({
+			where: { walletKey },
+		});
+		if (!record) {
+			return null;
+		}
 
 		return new MainWallet(
 			record.walletKey,

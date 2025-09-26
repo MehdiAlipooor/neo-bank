@@ -5,7 +5,7 @@ export class Transfer {
 		public id: string,
 		public sourceWalletKey: string,
 		public type: "DEPOSIT" | "WITHDRAW" | "INTERNAL",
-		public amount: bigint,
+		public amount: number,
 		public status: TransferStatus = "CREATED",
 		public destinationWalletKey?: string,
 		public metadata?: any,

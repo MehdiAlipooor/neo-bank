@@ -6,7 +6,7 @@ export class ChequeWalletEventConsumer extends RabbitMQEventConsumer {
 		super(connection, "wallet.events", "cheque-wallet-service");
 
 		this.on(/^wallet\.cheque\./, async (_routingKey, _event) => {
-			//   await ProcessChequeEvent(routingKey, event);
+			//await ProcessChequeEvent(routingKey, event);
 		});
 	}
 }

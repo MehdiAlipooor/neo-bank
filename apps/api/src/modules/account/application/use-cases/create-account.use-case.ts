@@ -4,21 +4,21 @@ import { AccountRepository } from "../../infrastructure/repositories/account.rep
 import type { AccountRepositoryPort } from "../ports/account-repository.port";
 
 export class CreateAccount {
-  repo: AccountRepositoryPort;
-  constructor() {
-    this.repo = new AccountRepository();
-  }
+	repo: AccountRepositoryPort;
+	constructor() {
+		this.repo = new AccountRepository();
+	}
 
-  async execute(userId: string, type = "PERSONAL") {
-    const exists = await this.repo.existsByUserId(userId);
-    if (exists) {
-      throw new Error("Account already exists");
-    }
+	async execute(userId: string, type = "PERSONAL") {
+		const exists = await this.repo.existsByUserId(userId);
+		if (exists) {
+			throw new Error("Account already exists");
+		}
 
-    const accountParams = new Account(randomUUID(), userId, type);
+		const accountParams = new Account(randomUUID(), userId, type);
 
-    const createAccountAction = await this.repo.create(accountParams);
+		const createAccountAction = await this.repo.create(accountParams);
 
-    return createAccountAction;
-  }
+		return createAccountAction;
+	}
 }

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import prisma from "../../../../../lib/db/prisma";
+import { CreateAccount } from "../../../account/application/use-cases/create-account.use-case";
 import { CreateWallet } from "../../../wallet/application/use-cases/create-wallet.use-case";
 import { WalletRepository } from "../../../wallet/infrastructure/repositories/wallet.repository";
 import { User } from "../../domain/entities/User";
@@ -8,6 +8,7 @@ import type { IAuthRepository } from "../ports/IAuthRepository";
 import type { IssueTokensUseCase } from "./issue-token.use-case";
 
 const walletRepo = new WalletRepository();
+const createAccountUseCase = new CreateAccount();
 
 export class LoginUserUseCase {
 	constructor(
@@ -40,19 +41,14 @@ export class LoginUserUseCase {
 		if (!user) {
 			const userSchema = User.create(username, phone.getValue(), randomUUID());
 			await this.authRepo.save(userSchema);
+
 			user = userSchema as User;
 
-			const account = await prisma.account.create({
-				data: {
-					accountKey: randomUUID(),
-					userId: user.id,
-					type: "PERSONAL",
-				},
-			});
-
+			const account = await createAccountUseCase.execute(user.id);
 			const createWallet = new CreateWallet(walletRepo);
+
 			await createWallet.execute({
-				accountId: account.id,
+				accountId: account.accountId,
 				userId: user.id,
 				walletName: "",
 				walletKey: randomUUID(),
