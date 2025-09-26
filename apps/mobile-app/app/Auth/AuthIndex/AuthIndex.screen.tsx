@@ -1,11 +1,11 @@
+import { useRef } from "react";
+import { Image, Text, View } from "react-native";
 import { CustomButton } from "@/components/atoms/CustomButton";
-import { BottomSheetRef } from "@/components/molecules/BottomSeet";
+import type { BottomSheetRef } from "@/components/molecules/BottomSeet";
 import { TermsOfUseButton } from "@/components/molecules/TermsOfuseButton";
 import { LoginForm } from "@/components/organisms/LoginForm";
 import { LogginBottomSheetTemplate } from "@/components/templates/LogginBottomSheet";
 import { themeColors } from "@/constants/theme";
-import { useRef } from "react";
-import { Image, Text, View } from "react-native";
 import { styles } from "./styles";
 
 export const AuthIndexScreen = () => {

@@ -1,6 +1,6 @@
 // src/modules/wallet/domain/MainWallet.ts
 
-import { WalletPolicy } from "../policies/wallet.policy";
+import type { WalletPolicy } from "../policies/wallet.policy";
 import { Money } from "../value-objects/money.value-object";
 import { Wallet } from "./wallet";
 
@@ -10,7 +10,7 @@ export class MainWallet extends Wallet {
 		accountId: string,
 		balance: Money,
 		available: Money,
-		policy?: WalletPolicy
+		policy?: WalletPolicy,
 	) {
 		super(walletKey, accountId, "MAIN", balance, available, policy);
 	}

@@ -27,12 +27,13 @@ export const Nav = () => {
 				headerShown: false,
 				tabBarActiveTintColor: "#007AFF",
 				tabBarInactiveTintColor: "gray",
-				tabBarIcon: ({ color, size }) => {
-					let iconName: string = "ellipse";
-					if (route.name === "Home") iconName = "home-outline";
-					if (route.name === "Profile") iconName = "person-outline";
-					if (route.name === "Settings") iconName = "settings-outline";
-					return <></>;
+				tabBarIcon: ({ color: _color, size: _size }) => {
+					let _iconName: string = "ellipse";
+					if (route.name === "Home") _iconName = "home-outline";
+					if (route.name === "Profile") _iconName = "person-outline";
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					if (route.name === "Settings") _iconName = "settings-outline";
+					return null;
 				},
 			})}
 		>

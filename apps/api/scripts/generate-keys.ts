@@ -1,7 +1,8 @@
 // scripts/generate-keys.ts
-import { V4 } from "paseto";
+
 import { createPublicKey } from "node:crypto";
 import { writeFileSync } from "node:fs";
+import { V4 } from "paseto";
 
 (async () => {
 	// 1) تولید کلید خصوصی سازگار با v4.public

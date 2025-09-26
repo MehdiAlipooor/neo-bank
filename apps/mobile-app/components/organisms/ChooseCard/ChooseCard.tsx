@@ -1,5 +1,5 @@
-import { themeColors } from "@/constants/theme";
 import { Text, View } from "react-native";
+import { themeColors } from "@/constants/theme";
 import { WalletCard } from "../WalletCard";
 
 export const ChooseCard = () => {

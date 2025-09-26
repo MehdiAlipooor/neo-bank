@@ -1,5 +1,5 @@
-import { WalletPolicy } from "../policies/wallet.policy";
-import { Money } from "../value-objects/money.value-object";
+import type { WalletPolicy } from "../policies/wallet.policy";
+import type { Money } from "../value-objects/money.value-object";
 
 export abstract class Wallet {
 	constructor(
@@ -20,7 +20,7 @@ export abstract class Wallet {
 	}
 
 	/** Domain events can be raised here if needed */
-	protected addDomainEvent(event: any) {
+	protected addDomainEvent(_event: any) {
 		// push to internal event list for publishing
 	}
 }

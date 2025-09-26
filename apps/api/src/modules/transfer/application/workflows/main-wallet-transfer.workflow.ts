@@ -1,8 +1,8 @@
-import { RabbitMQPublisher } from "../../../../shared/lib/rabbitMq-publisher";
-import { Wallet } from "../../../wallet/domain/entities/wallet";
-import { DepositMainUseCase } from "../use-cases/deposit-main.usecase";
-import { InternalTransferMainUseCase } from "../use-cases/internal-transfer-main.usecase";
-import { WithdrawMainUseCase } from "../use-cases/withdraw-main.usecase";
+import type { RabbitMQPublisher } from "../../../../shared/lib/rabbitMq-publisher";
+import type { Wallet } from "../../../wallet/domain/entities/wallet";
+import type { DepositMainUseCase } from "../use-cases/deposit-main.usecase";
+import type { InternalTransferMainUseCase } from "../use-cases/internal-transfer-main.usecase";
+import type { WithdrawMainUseCase } from "../use-cases/withdraw-main.usecase";
 
 export class MainWalletTransferWorkflow {
 	constructor(

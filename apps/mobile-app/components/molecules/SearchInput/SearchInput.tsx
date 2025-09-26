@@ -1,7 +1,7 @@
+import { StyleSheet, TextInput, View } from "react-native";
 import SearchIcon from "@/components/icons/Search";
 import { themeColors, themRadius } from "@/constants/theme";
 import { globalStyles } from "@/styles/global";
-import { StyleSheet, TextInput, View } from "react-native";
 
 export const SearchInput = () => {
 	return (

@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 
 export enum WalletType {
 	MAIN = "MAIN",
@@ -6,6 +6,7 @@ export enum WalletType {
 	CHEQUE = "CHEQUE",
 }
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <Its needed here>
 export class WalletFactory {
 	static create(accountId: string, type: WalletType, name?: string) {
 		return {

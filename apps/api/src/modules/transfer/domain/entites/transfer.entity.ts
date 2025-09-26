@@ -1,4 +1,4 @@
-import { TransferStatus } from "@prisma/client";
+import type { TransferStatus } from "@prisma/client";
 
 export class Transfer {
 	constructor(

@@ -1,4 +1,4 @@
-import { LedgerEntry } from "./ledger.entity";
+import type { LedgerEntry } from "./ledger.entity";
 
 export abstract class LedgerTransaction {
 	id: string;

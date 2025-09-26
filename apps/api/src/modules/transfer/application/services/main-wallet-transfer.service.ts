@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { LedgerFactory } from "../../../ledger/application/services/ledger-factory.service";
-import { BaseWalletService } from "../../../wallet/application/services/base-wallet.service";
-import { Wallet } from "../../../wallet/domain/entities/wallet";
+import type { BaseWalletService } from "../../../wallet/application/services/base-wallet.service";
+import type { Wallet } from "../../../wallet/domain/entities/wallet";
 import { Transfer } from "../../domain/entites/transfer.entity";
-import { TransferRepositoryPort } from "../ports/transfer-repository.port";
+import type { TransferRepositoryPort } from "../ports/transfer-repository.port";
 
 export class MainWalletTransferService {
 	constructor(

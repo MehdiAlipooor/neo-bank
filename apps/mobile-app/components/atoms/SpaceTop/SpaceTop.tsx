@@ -1,7 +1,7 @@
-import { sizes } from "@/constants/theme";
-import { ThemeSize } from "@/types/size";
-import { FC } from "react";
+import type { FC } from "react";
 import { View } from "react-native";
+import { sizes } from "@/constants/theme";
+import type { ThemeSize } from "@/types/size";
 
 export type Props = {
 	/**

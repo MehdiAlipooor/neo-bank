@@ -44,17 +44,20 @@ export class LoginUserUseCase {
 
 			const account = await prisma.account.create({
 				data: {
-				  accountKey: randomUUID(),
-				  userId: user.id,
-				  type: 'PERSONAL'
-				}
-			  })
-			  
-	
+					accountKey: randomUUID(),
+					userId: user.id,
+					type: "PERSONAL",
+				},
+			});
+
 			const createWallet = new CreateWallet(walletRepo);
-			await createWallet.execute({accountId: account.id, userId: user.id, walletName:'', walletKey: randomUUID()});
+			await createWallet.execute({
+				accountId: account.id,
+				userId: user.id,
+				walletName: "",
+				walletKey: randomUUID(),
+			});
 		}
-	
 
 		const tokens = await this.issueTokenUseCase.execute((user as User)?.id);
 

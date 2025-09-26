@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import { WalletController } from "../controllers/wallet.controller";
 
 export async function registerWalletRoutes(app: FastifyInstance) {

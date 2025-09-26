@@ -1,4 +1,4 @@
-import { ChannelModel } from "amqplib";
+import type { ChannelModel } from "amqplib";
 
 type Handler = (routingKey: string, payload: any) => Promise<void>;
 

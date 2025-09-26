@@ -1,9 +1,9 @@
+import type { FC } from "react";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { SpaceTop } from "@/components/atoms/SpaceTop";
 import { CheckIcon } from "@/components/icons/Chcek";
 import { sizes, themeColors } from "@/constants/theme";
 import { globalStyles } from "@/styles/global";
-import { FC } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { SearchInput } from "../SearchInput";
 import { contractsMockList } from "./mock";
 import { styles } from "./styles";

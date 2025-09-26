@@ -1,5 +1,5 @@
-import { initDeposit } from "@/services/deposit.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { initDeposit } from "@/services/deposit.service";
 
 export const useCreateDepositRequest = () => {
 	const queryClient = useQueryClient();

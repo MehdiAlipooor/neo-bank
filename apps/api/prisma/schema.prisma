@@ -201,14 +201,3 @@ model LedgerEntry {
   @@index([account])
   @@index([ledgerTxKey])
 }
-
-model OutboxEvent {
-  id            String    @id @default(uuid())
-  aggregateId   String?
-  aggregateType String?
-  type          String
-  payload       Json
-  processed     Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  processedAt   DateTime?
-}

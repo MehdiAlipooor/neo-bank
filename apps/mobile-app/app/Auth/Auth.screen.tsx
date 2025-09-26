@@ -1,5 +1,5 @@
-import { Nav } from "./nav";
 import { Layout } from "./layout";
+import { Nav } from "./nav";
 
 export const AuthScreen = () => {
 	return (

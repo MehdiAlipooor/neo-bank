@@ -1,5 +1,5 @@
 import prisma from "../../../../../lib/db/prisma";
-import { TransferRepositoryPort } from "../../application/ports/transfer-repository.port";
+import type { TransferRepositoryPort } from "../../application/ports/transfer-repository.port";
 import { Transfer } from "../../domain/entites/transfer.entity";
 
 export class TransferRepository implements TransferRepositoryPort {
@@ -31,7 +31,7 @@ export class TransferRepository implements TransferRepositoryPort {
 		await prisma.transfer.update({ where: { id }, data: { status } });
 	}
 
-	async findById(id: string, status: string): Promise<Transfer | null> {
+	async findById(id: string, _status: string): Promise<Transfer | null> {
 		const row = await prisma.transfer.findUnique({ where: { id } });
 		if (!row) {
 			return null;

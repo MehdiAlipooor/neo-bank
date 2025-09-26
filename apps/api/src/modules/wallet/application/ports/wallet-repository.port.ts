@@ -1,4 +1,4 @@
-import { MainWallet } from "../../domain/entities/main-wallet.entity";
+import type { MainWallet } from "../../domain/entities/main-wallet.entity";
 
 export interface WalletRepositoryPort {
 	create(wallet: MainWallet): Promise<MainWallet>;

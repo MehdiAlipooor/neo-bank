@@ -1,5 +1,5 @@
-import { sizes, themeColors, themRadius } from "@/constants/theme";
 import { StyleSheet } from "react-native";
+import { sizes, themeColors, themRadius } from "@/constants/theme";
 
 export const styles = StyleSheet.create({
 	input: {

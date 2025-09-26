@@ -1,8 +1,8 @@
-import { useDanaFonts } from "@/hooks/useDataFonts";
-import { useModamFonts } from "@/hooks/useModamFonts";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { I18nManager } from "react-native";
+import { useDanaFonts } from "@/hooks/useDataFonts";
+import { useModamFonts } from "@/hooks/useModamFonts";
 import { RootLayout } from "./layout";
 import { Nav } from "./nav";
 
@@ -19,7 +19,7 @@ export default function Index() {
 		if (loaded || error || modamError || modamLoaded) {
 			SplashScreen.hideAsync();
 		}
-	}, [loaded, error]);
+	}, [loaded, error, modamError, modamLoaded]);
 
 	return (
 		<RootLayout>

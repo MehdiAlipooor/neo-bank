@@ -1,8 +1,8 @@
+import { StyleSheet, Text, View } from "react-native";
 import BellIcon from "@/components/icons/Bell";
 import { ActionIcon } from "@/components/molecules/ActionIcon";
 import { sizes } from "@/constants/theme";
 import { globalStyles } from "@/styles/global";
-import { StyleSheet, Text, View } from "react-native";
 
 export const InformationCard = () => {
 	return (

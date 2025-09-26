@@ -1,6 +1,5 @@
-import { themeColors } from "@/constants/theme";
-import * as React from "react";
 import Svg, { Path } from "react-native-svg";
+import { themeColors } from "@/constants/theme";
 
 type Props = {
 	size?: number;

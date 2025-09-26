@@ -1,7 +1,7 @@
-import { ThemeColor } from "@/types/colors";
-import { ThemeRadius } from "@/types/radius";
-import { ThemeSize } from "@/types/size";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+import type { ThemeColor } from "@/types/colors";
+import type { ThemeRadius } from "@/types/radius";
+import type { ThemeSize } from "@/types/size";
 
 export type ButtonProps = {
 	children?: ReactNode;

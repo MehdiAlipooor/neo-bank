@@ -1,6 +1,6 @@
+import { View } from "react-native";
 import { CustomButton } from "@/components/atoms/CustomButton";
 import { InputItem } from "@/components/molecules/InputItem";
-import { View } from "react-native";
 
 export const LoginForm = () => {
 	return (

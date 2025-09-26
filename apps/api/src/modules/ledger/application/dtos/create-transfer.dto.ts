@@ -1,4 +1,4 @@
-import { Transfer } from "../../../transfer/domain/entites/transfer.entity";
+import type { Transfer } from "../../../transfer/domain/entites/transfer.entity";
 
 export function createTransferDto(transfer: Transfer) {
 	return {

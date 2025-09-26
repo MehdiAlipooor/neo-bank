@@ -1,30 +1,29 @@
-import { themeColors } from "@/constants/theme";
 import GorHomBottomSheet, {
 	BottomSheetBackdrop as GorHomBottomSheetBackdrop,
-	BottomSheetBackdropProps as GorHomBottomSheetBackdropProps,
-	BottomSheetProps as GorHomBottomSheetProps,
+	type BottomSheetBackdropProps as GorHomBottomSheetBackdropProps,
+	type BottomSheetProps as GorHomBottomSheetProps,
 	BottomSheetView as GorHomBottomSheetView,
 } from "@gorhom/bottom-sheet";
-
-import React, {
+import {
 	forwardRef,
 	useCallback,
 	useImperativeHandle,
 	useMemo,
 	useRef,
 } from "react";
-import { Dimensions, StyleSheet } from "react-native";
-import { BottomSheetRef } from "./types";
+import { Dimensions } from "react-native";
+import { themeColors } from "@/constants/theme";
+import type { BottomSheetRef } from "./types";
 
 export const BottomSheet = forwardRef<BottomSheetRef, GorHomBottomSheetProps>(
-	(props, ref) => {
+	function BottomSheetComponent(props, ref) {
 		const bottomSheetRef = useRef<GorHomBottomSheet>(null);
 
 		const { snapPoints, backgroundStyle, children, ...rest } = props;
 
 		const snapPointsMemo = useMemo(() => snapPoints, [snapPoints]);
 
-		const sheeViewHeight = useMemo(() => {
+		const sheetViewHeight = useMemo(() => {
 			let heightPercentage = "0";
 			if (
 				Array.isArray(snapPointsMemo) &&
@@ -39,13 +38,13 @@ export const BottomSheet = forwardRef<BottomSheetRef, GorHomBottomSheetProps>(
 			return (
 				(Dimensions.get("window").height * parseFloat(heightPercentage)) / 100
 			);
-		}, [snapPoints]);
+		}, [snapPointsMemo]);
 
 		useImperativeHandle(ref, () => ({
 			expand: () => bottomSheetRef.current?.expand(),
 			collapse: () => bottomSheetRef.current?.collapse(),
 			close: () => bottomSheetRef.current?.close(),
-			getHeight: () => sheeViewHeight,
+			getHeight: () => sheetViewHeight,
 		}));
 
 		const renderBackdrop = useCallback(
@@ -54,6 +53,11 @@ export const BottomSheet = forwardRef<BottomSheetRef, GorHomBottomSheetProps>(
 					disappearsOnIndex={0}
 					appearsOnIndex={1}
 					{...props}
+					// Theming for backdrop
+					opacity={0.5}
+					pressBehavior="close"
+					//   appearsOnMount
+					// You can add more theme-based props here if needed
 				/>
 			),
 			[],
@@ -69,29 +73,30 @@ export const BottomSheet = forwardRef<BottomSheetRef, GorHomBottomSheetProps>(
 				detached
 				enableBlurKeyboardOnGesture
 				bottomInset={0}
-				backgroundStyle={[styles.background, backgroundStyle]}
-				handleIndicatorStyle={styles.handleIndicator}
+				backgroundStyle={[
+					{
+						backgroundColor: themeColors.dark,
+						borderRadius: 16,
+					},
+					backgroundStyle,
+				]}
+				handleIndicatorStyle={{
+					display: "none",
+					backgroundColor: themeColors.Primary,
+				}}
 				backdropComponent={renderBackdrop}
 				{...rest}
 			>
-				<GorHomBottomSheetView style={styles.contentContainer}>
+				<GorHomBottomSheetView
+					style={{
+						flex: 1,
+						padding: 16,
+						backgroundColor: themeColors.dark,
+					}}
+				>
 					{children}
 				</GorHomBottomSheetView>
 			</GorHomBottomSheet>
 		);
 	},
 );
-
-const styles = StyleSheet.create({
-	background: {
-		backgroundColor: themeColors.dark,
-		borderRadius: 16,
-	},
-	handleIndicator: {
-		display: "none",
-	},
-	contentContainer: {
-		flex: 1,
-		padding: 16,
-	},
-});

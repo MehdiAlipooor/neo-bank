@@ -1,4 +1,4 @@
-import { WalletPolicy } from "./wallet.policy";
+import type { WalletPolicy } from "./wallet.policy";
 
 export class SavingPotPolicy implements WalletPolicy {
 	canDeposit(fromType: string): boolean {
@@ -7,11 +7,11 @@ export class SavingPotPolicy implements WalletPolicy {
 	canWithdraw(toType: string): boolean {
 		return toType === "MAIN";
 	}
-	canTransfer(toType: string): boolean {
+	canTransfer(_toType: string): boolean {
 		return false;
 	}
 	validate?(
-		operation: "deposit" | "withdraw" | "transfer",
+		_operation: "deposit" | "withdraw" | "transfer",
 		amount: number,
 	): void {
 		if (amount <= 0) {

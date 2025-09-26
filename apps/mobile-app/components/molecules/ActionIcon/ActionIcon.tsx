@@ -1,9 +1,9 @@
+import type { FC } from "react";
+import { Pressable } from "react-native";
 import { themRadius } from "@/constants/theme";
 import { globalStyles } from "@/styles/global";
-import { FC } from "react";
-import { Pressable } from "react-native";
 import { styles } from "./styles";
-import { ActionIconProps } from "./types";
+import type { ActionIconProps } from "./types";
 
 export const ActionIcon: FC<ActionIconProps> = ({
 	children,

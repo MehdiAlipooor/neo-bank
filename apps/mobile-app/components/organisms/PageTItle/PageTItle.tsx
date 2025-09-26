@@ -1,8 +1,8 @@
+import type { FC } from "react";
+import { Text, View } from "react-native";
 import { BackButton } from "@/components/molecules/BackButton";
 import { globalStyles } from "@/styles/global";
-import { FC } from "react";
-import { Text, View } from "react-native";
-import { PageTitleProps } from "./types";
+import type { PageTitleProps } from "./types";
 
 export const PageTitle: FC<PageTitleProps> = ({ hideBackButton, title }) => {
 	return (

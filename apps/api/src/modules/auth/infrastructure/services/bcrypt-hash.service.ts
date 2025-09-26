@@ -1,5 +1,5 @@
-import type { IHashService } from "../../application/ports/IHashService";
 import bcrypt from "bcrypt";
+import type { IHashService } from "../../application/ports/IHashService";
 
 export class BcryptHashService implements IHashService {
 	async hash(data: string): Promise<string> {

@@ -1,10 +1,10 @@
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { CashMinusIcon } from "@/components/icons/CashMines";
 import { CashPlusIcon } from "@/components/icons/CashPlus";
 import { CategoryPlusIcon } from "@/components/icons/CategoryList";
 import { TransferIcon } from "@/components/icons/Transfer";
 import { themeColors, themRadius } from "@/constants/theme";
 import { globalStyles } from "@/styles/global";
-import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export const TransferButtons = () => {
 	return (

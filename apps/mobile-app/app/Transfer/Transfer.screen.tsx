@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { CustomButton } from "@/components/atoms/CustomButton";
 import { SpaceTop } from "@/components/atoms/SpaceTop/SpaceTop";
 import { ContactsList } from "@/components/molecules/ContactsList";
 import { ChooseCard } from "@/components/organisms/ChooseCard";
 import { PageTitle } from "@/components/organisms/PageTitle";
 import { sizes } from "@/constants/theme";
-import { useState } from "react";
 import { Layout } from "./layout";
 
 export const TransferScreen = () => {

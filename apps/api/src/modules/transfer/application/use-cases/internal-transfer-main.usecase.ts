@@ -1,5 +1,5 @@
-import { Wallet } from "../../../wallet/domain/entities/wallet";
-import { MainWalletTransferService } from "../services/main-wallet-transfer.service";
+import type { Wallet } from "../../../wallet/domain/entities/wallet";
+import type { MainWalletTransferService } from "../services/main-wallet-transfer.service";
 
 export class InternalTransferMainUseCase {
 	constructor(private service: MainWalletTransferService) {}

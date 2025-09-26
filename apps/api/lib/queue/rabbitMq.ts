@@ -33,7 +33,7 @@
 // 	return channel!;
 // }
 
-import amqp, { Channel, ChannelModel, Connection, Options } from "amqplib";
+import amqp, { type Channel, type ChannelModel, type Options } from "amqplib";
 
 let connection: ChannelModel | null = null;
 let channel: Channel | null = null;

@@ -1,6 +1,6 @@
-import { RabbitMQPublisher } from "../../../../shared/lib/rabbitMq-publisher";
+import type { RabbitMQPublisher } from "../../../../shared/lib/rabbitMq-publisher";
 import { BaseWalletService } from "../../../wallet/application/services/base-wallet.service";
-import { Wallet } from "../../../wallet/domain/entities/wallet";
+import type { Wallet } from "../../../wallet/domain/entities/wallet";
 import { MainWalletTransferService } from "../../application/services/main-wallet-transfer.service";
 import { DepositMainUseCase } from "../../application/use-cases/deposit-main.usecase";
 import { InternalTransferMainUseCase } from "../../application/use-cases/internal-transfer-main.usecase";
@@ -14,8 +14,8 @@ export class MainWalletController {
 		private walletRepo: any, // implement your wallet repo
 	) {}
 
-	async deposit(req: any, res: any) {
-		const { walletKey, amount } = req.body;
+	async deposit(req: any, _res: any) {
+		const { walletKey } = req.body;
 		const wallet: Wallet = await this.walletRepo.findByKey(walletKey);
 
 		const walletService = new BaseWalletService(wallet);
@@ -27,7 +27,7 @@ export class MainWalletController {
 		const withdrawUC = new WithdrawMainUseCase(service);
 		const internalUC = new InternalTransferMainUseCase(service);
 
-		const workflow = new MainWalletTransferWorkflow(
+		const _workflow = new MainWalletTransferWorkflow(
 			depositUC,
 			withdrawUC,
 			internalUC,

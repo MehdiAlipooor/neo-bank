@@ -1,9 +1,9 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
+import { IssueTokensUseCase } from "../../application/use-cases/issue-token.use-case";
+import { LoginUserUseCase } from "../../application/use-cases/login-user.use-case";
+import { TokenService } from "../../domain/services/RefreshToken.service";
 import { AuthRepository } from "../../infrastructure/repositories/auth-repository";
 import { RefreshTokenRepository } from "../../infrastructure/repositories/refresh-token.repo";
-import { LoginUserUseCase } from "../../application/use-cases/login-user.use-case";
-import { IssueTokensUseCase } from "../../application/use-cases/issue-token.use-case";
-import { TokenService } from "../../domain/services/RefreshToken.service";
 
 const repo = new AuthRepository();
 

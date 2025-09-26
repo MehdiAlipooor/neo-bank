@@ -1,4 +1,4 @@
-import { WalletPolicy } from "./wallet.policy";
+import type { WalletPolicy } from "./wallet.policy";
 
 export class ChequWalletPolicy implements WalletPolicy {
 	canDeposit(fromType: string): boolean {
@@ -17,7 +17,7 @@ export class ChequWalletPolicy implements WalletPolicy {
 	}
 
 	validate(
-		operation: "deposit" | "withdraw" | "transfer",
+		_operation: "deposit" | "withdraw" | "transfer",
 		amount: number,
 	): void {
 		if (amount <= 0) throw new Error("Amount must be positive");
