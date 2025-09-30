@@ -3,13 +3,13 @@ import type { WalletFecadePort } from "../ports/wallet-fecade.port";
 import type { WalletRepositoryPort } from "../ports/wallet-repository.port";
 
 export class WalletFecad implements WalletFecadePort {
-  private repo: WalletRepositoryPort;
-  constructor() {
-    this.repo = new WalletRepository();
-  }
+	private repo: WalletRepositoryPort;
+	constructor() {
+		this.repo = new WalletRepository();
+	}
 
-  async findByKey(walletKey: string) {
-    const record = await this.repo.findByWalletKey(walletKey);
-    return record ?? null;
-  }
+	async findByKey(walletKey: string) {
+		const record = await this.repo.findByWalletKey(walletKey);
+		return record ?? null;
+	}
 }

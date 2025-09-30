@@ -1,34 +1,47 @@
-import type { RabbitMQPublisher } from "../../../../shared/lib/rabbitMq-publisher";
+import type { Prisma } from "@prisma/client";
+import { QUEUES } from "../../../../../enviroment";
+import prisma from "../../../../../lib/db/prisma";
+import { RabbitMQPublisher } from "../../../../shared/lib/rabbitMq-publisher";
 import { MainWallet } from "../../../wallet/domain/entities/main-wallet.entity";
 import type { Wallet } from "../../../wallet/domain/entities/wallet";
 import { MainWalletPolicy } from "../../../wallet/domain/policies/main-wallet.policy";
 import type { DepositMainUseCase } from "../use-cases/initi-deposit-main.use-case";
 
 export class MainWalletDepositWorkflow {
-  constructor(
-    private depositUC: DepositMainUseCase,
-    private eventPublisher: RabbitMQPublisher
-  ) {}
+  constructor(private depositUC: DepositMainUseCase) {}
 
-  async deposit(wallet: Wallet, amount: number) {
-    const transfer = await this.depositUC.execute(
-      new MainWallet(
-        wallet.walletKey,
-        wallet.accountId,
-        wallet.balance,
-        wallet.available,
-        new MainWalletPolicy()
-      ),
-      amount
+  async deposit(wallet: Wallet, idempotencyKey: string, amount: number) {
+    const mainWallet = new MainWallet(
+      wallet.walletKey,
+      wallet.accountId,
+      wallet.balance,
+      wallet.available,
+      new MainWalletPolicy()
     );
 
-    await this.eventPublisher.publish<any>("wallet.main.deposit.created", {
-      walletKey: wallet.walletKey,
-      amount,
-      transferKey: "transfer-key",
-    });
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      const transfer = await this.depositUC.execute(
+        mainWallet,
+        idempotencyKey,
+        amount,
+        tx
+      );
 
-    return transfer;
+      const messageObject = {
+        transfer,
+        wallet,
+        amount,
+      };
+
+      const publisher = new RabbitMQPublisher();
+
+      await publisher.publish<any>(
+        QUEUES.WALLET.MAIN.DEPOSIT.CREATE,
+        messageObject
+      );
+
+      return transfer;
+    });
   }
 }
 

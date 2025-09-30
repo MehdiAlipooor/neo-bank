@@ -1,14 +1,30 @@
 import type { ChannelModel } from "amqplib";
 import { RabbitMQEventConsumer } from "../../../../shared/lib/rabbitMq-consumer";
+import { LedgerFecad } from "../../../ledger/application/fecades/ledger-fecade";
+import { MainWalletDepositSettlementWorkflow } from "../../application/workflows/main-wallet-deposit-settlement.workflow";
+import { TransferRepository } from "../repositories/transfer.reository";
+
+const transferRepo = new TransferRepository();
+const ledgerFecade = new LedgerFecad();
+const workflow = new MainWalletDepositSettlementWorkflow(
+  transferRepo,
+  ledgerFecade
+);
+
+const mockBankResponse = async () => {
+  return await new Promise((resolve) => resolve(true));
+};
 
 export class MainWalletEventConsumer extends RabbitMQEventConsumer {
   constructor(connection: ChannelModel) {
-    // super(connection, "wallet.events", "main-wallet-service");
-    super(connection, "wallet.events", "wallet.main.deposit.created");
+    super(connection, "wallet.events", "main-wallet-service");
 
-    this.on(/^wallet\.main\./, async (_routingKey, _event) => {
-      console.log(_routingKey, _event);
-      //   await ProcessMainWalletEvent(routingKey, event);
+    this.on(/^wallet\.main\./, async (_routingKey, event) => {
+      const bankResponse = await mockBankResponse();
+      if (bankResponse) {
+        await workflow.execute(event);
+      } else {
+      }
     });
   }
 }

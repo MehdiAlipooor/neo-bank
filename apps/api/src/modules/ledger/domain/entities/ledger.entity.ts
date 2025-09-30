@@ -1,9 +1,9 @@
-export abstract class LedgerEntry {
+export class LedgerEntry {
 	id: string;
 	ledgerEntryKey: string;
 	walletKey?: string;
 	account: string;
-	amount: bigint;
+	amount: number;
 	type: string;
 	metadata?: any;
 	createdAt: Date;
@@ -12,7 +12,7 @@ export abstract class LedgerEntry {
 		id: string,
 		ledgerEntryKey: string,
 		account: string,
-		amount: bigint,
+		amount: number,
 		type: string,
 		walletKey?: string,
 		metadata?: any,

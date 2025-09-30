@@ -13,13 +13,14 @@ app.register(walletModule);
 app.register(transferModule);
 
 async function start() {
-	try {
-		await app.listen({ port: port });
-		console.log(`Server listening at http://localhost:${port}`);
-	} catch (err) {
-		app.log.error(err);
-		process.exit(1);
-	}
+  try {
+    await app.listen({ port: port });
+    console.log(`Server listening at http://localhost:${port}`);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
 }
 
+start();
 start();

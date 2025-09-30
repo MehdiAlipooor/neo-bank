@@ -1,11 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { WalletFecad } from "../../../wallet/application/fecads/wallet.fecade";
 import { BaseWalletService } from "../../../wallet/application/services/base-wallet.service";
+import { MainWallet } from "../../../wallet/domain/entities/main-wallet.entity";
 import type { Wallet } from "../../../wallet/domain/entities/wallet";
 import { MainWalletTransferService } from "../../application/services/main-wallet-transfer.service";
 import { DepositMainUseCase } from "../../application/use-cases/initi-deposit-main.use-case";
 import { MainWalletDepositWorkflow } from "../../application/workflows/main-wallet-transfer.workflow";
-import { MainWalletDepositEventPublisher } from "../../infrastructure/message-brokers/main-wallet-deposit-event-publisher";
 import { TransferRepository } from "../../infrastructure/repositories/transfer.reository";
 
 const transferRepo = new TransferRepository();
@@ -24,7 +24,15 @@ export class MainWalletController {
       return reply.status(404).send({ message: "no wallet found" });
     }
 
-    const walletService = new BaseWalletService(wallet);
+    const mainWallet = new MainWallet(
+      wallet.walletKey,
+      wallet.accountId,
+      wallet.balance,
+      wallet.available
+    );
+
+    console.log({ mainWallet });
+    const walletService = new BaseWalletService(mainWallet);
     const service = new MainWalletTransferService(
       transferRepo,
       walletService,
@@ -33,12 +41,9 @@ export class MainWalletController {
 
     const depositUseCase = new DepositMainUseCase(service);
 
-    const workflow = new MainWalletDepositWorkflow(
-      depositUseCase,
-      new MainWalletDepositEventPublisher()
-    );
+    const workflow = new MainWalletDepositWorkflow(depositUseCase);
 
-    const response = await workflow.deposit(wallet, amount);
+    const response = await workflow.deposit(wallet, idempotencyKey, amount);
 
     return reply.status(200).send(response);
   }

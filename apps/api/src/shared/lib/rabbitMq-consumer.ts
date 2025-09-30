@@ -19,21 +19,30 @@ export abstract class RabbitMQEventConsumer {
 		const channel = await this.connection.createChannel();
 		await channel.assertExchange(this.exchange, "topic", { durable: true });
 		await channel.assertQueue(this.queue, { durable: true });
-
-		// bind generic wildcard so we receive all wallet.* events
 		await channel.bindQueue(this.queue, this.exchange, "wallet.#");
+		channel.prefetch(100);
 
 		await channel.consume(this.queue, async (msg) => {
 			if (!msg) return;
-			const routingKey = msg.fields.routingKey;
-			const payload = JSON.parse(msg.content.toString());
 
-			const match = this.handlers.find((h) => h.pattern.test(routingKey));
-			if (match) {
-				await match.handler(routingKey, payload);
+			try {
+				const routingKey = msg.fields.routingKey;
+				const payload = JSON.parse(msg.content.toString());
+
+				const match = this.handlers.find((h) => h.pattern.test(routingKey));
+				if (match) {
+					await match.handler(routingKey, payload);
+				}
+
+				channel.ack(msg);
+			} catch (err) {
+				console.error("❌ Error handling message:", err);
+				channel.nack(msg, false, false);
 			}
-
-			channel.ack(msg);
 		});
+
+		console.log(
+			`✅ Consumer started: queue="${this.queue}" exchange="${this.exchange}"`,
+		);
 	}
 }

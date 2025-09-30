@@ -53,6 +53,14 @@ enum TransferDestIdentifier {
   CARD
 }
 
+
+enum LedgerStatus {
+  PENDING   
+  SETTLED   
+  FAILED    
+  CANCELED  
+}
+
 enum TransferType {
   DEPOSIT
   WITHDRAW
@@ -176,12 +184,14 @@ model Transfer {
 model LedgerTransaction {
   id          String                @id @default(uuid())
   ledgerTxKey String                @unique
-  transferKey String?
+  transferKey String                @unique
   type        LedgerTransactionType
   createdAt   DateTime              @default(now())
-
+  status      LedgerStatus          @default(PENDING)
+  
   ledgerEntries LedgerEntry[]
 }
+
 
 model LedgerEntry {
   id             String                @id @default(uuid())

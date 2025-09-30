@@ -1,5 +1,5 @@
 export class MainWalletConfirmDeposit {
-  constructor() {}
+	constructor() {}
 
-  async execute() {}
+	async execute() {}
 }
