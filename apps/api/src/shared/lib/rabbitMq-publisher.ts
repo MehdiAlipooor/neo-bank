@@ -22,7 +22,7 @@ export class RabbitMQPublisher {
 			Buffer.from(JSON.stringify(message)),
 			{ persistent: true },
 		);
-		console.log(`[Publisher] Sent ${routingKey}`, message);
+		// console.log(`[Publisher] Sent ${routingKey}`, message);
 	}
 
 	// private connection!: ChannelModel;

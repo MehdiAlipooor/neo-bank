@@ -3,14 +3,14 @@ import type { LedgerTransaction } from "../../domain/entities/ledger-transaction
 import type { LedgerTransactionStatus } from "../../domain/enums/ledger-transaction-status.enum";
 
 export interface LedgerFecadePort {
-  saveTransaction(
-    ledgerTx: LedgerTransaction,
-    tx: Prisma.TransactionClient
-  ): Promise<void>;
+	saveTransaction(
+		ledgerTx: LedgerTransaction,
+		tx: Prisma.TransactionClient,
+	): Promise<void>;
 
-  updateTransactionStatus(
-    transferKey: string,
-    status: LedgerTransactionStatus,
-    tx: Prisma.TransactionClient
-  ): Promise<void>;
+	updateTransactionStatus(
+		transferKey: string,
+		status: LedgerTransactionStatus,
+		tx: Prisma.TransactionClient,
+	): Promise<LedgerTransaction>;
 }

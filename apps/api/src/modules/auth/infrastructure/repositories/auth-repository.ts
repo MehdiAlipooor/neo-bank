@@ -41,10 +41,8 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async save(user: User): Promise<void> {
-		const response = await prisma.user.create({
+		await prisma.user.create({
 			data: { ...user, userKey: randomUUID() },
 		});
-
-		console.log(response);
 	}
 }

@@ -6,34 +6,34 @@ import type { LedgerTransactionStatus } from "../../domain/enums/ledger-transact
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <We need this here>
 export class LedgerTransactionFactory {
-  static createLedgerTransaction(
-    type: "DEPOSIT" | "WITHDRAW" | "INTERNAL",
-    wallet: Wallet,
-    amount: number,
-    status: LedgerTransactionStatus,
-    transferKey: string
-  ) {
-    const ledgerTxKey = `ledgerTx-${Date.now()}`;
+	static createLedgerTransaction(
+		type: "DEPOSIT" | "WITHDRAW" | "INTERNAL",
+		wallet: Wallet,
+		amount: number,
+		status: LedgerTransactionStatus,
+		transferKey: string,
+	) {
+		const ledgerTxKey = `ledgerTx-${Date.now()}`;
 
-    const tx = new ConcreteLedgerTransaction(
-      randomUUID(),
-      ledgerTxKey,
-      type,
-      status,
-      transferKey
-    );
+		const tx = new ConcreteLedgerTransaction(
+			randomUUID(),
+			ledgerTxKey,
+			type,
+			status,
+			transferKey,
+		);
 
-    const entries = new LedgerEntry(
-      randomUUID(),
-      ledgerTxKey,
-      "WALLET",
-      amount,
-      type,
-      wallet.walletKey
-    );
+		const entries = new LedgerEntry(
+			randomUUID(),
+			ledgerTxKey,
+			"WALLET",
+			amount,
+			type,
+			wallet.walletKey,
+		);
 
-    tx.ledgerEntries.push(entries);
+		tx.ledgerEntries.push(entries);
 
-    return tx;
-  }
+		return tx;
+	}
 }
