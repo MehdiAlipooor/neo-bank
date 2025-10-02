@@ -1,7 +1,7 @@
-import { themeColors } from "@/constants/theme";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
-import { FC } from "react";
+import type { FC } from "react";
 import { Text, TextInput, View } from "react-native";
+import { themeColors } from "@/constants/theme";
 import { styles } from "./styles";
 
 type InputItemProps = {

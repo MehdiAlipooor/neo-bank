@@ -1,15 +1,15 @@
+import { useRef } from "react";
+import { Image, Text, View } from "react-native";
 import { CustomButton } from "@/components/atoms/CustomButton";
+import type { BottomSheetRef } from "@/components/molecules/BottomSeet";
 import { TermsOfUseButton } from "@/components/molecules/TermsOfuseButton";
 import { LoginForm } from "@/components/organisms/LoginForm";
 import { LogginBottomSheetTemplate } from "@/components/templates/LogginBottomSheet";
 import { themeColors } from "@/constants/theme";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { useRef } from "react";
-import { Image, Text, View } from "react-native";
 import { styles } from "./styles";
 
 export const AuthIndexScreen = () => {
-	const bottomSheetRef = useRef<BottomSheet>(null);
+	const bottomSheetRef = useRef<BottomSheetRef>(null);
 
 	return (
 		<View style={styles.wrapper}>

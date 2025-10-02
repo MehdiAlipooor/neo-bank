@@ -1,17 +1,19 @@
-import { BottomSheet, BottomSheetRef } from "@/components/molecules/BottomSeet";
 import {
 	BottomSheetBackdrop,
-	BottomSheetBackdropProps,
+	type BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
 import {
 	forwardRef,
-	ReactNode,
+	type ReactNode,
 	useCallback,
 	useImperativeHandle,
 	useMemo,
 	useRef,
 } from "react";
-import { Dimensions } from "react-native";
+import {
+	BottomSheet,
+	type BottomSheetRef,
+} from "@/components/molecules/BottomSeet";
 
 type LogginBottomSheetProps = {
 	children: ReactNode;
@@ -23,14 +25,6 @@ export const DepositBottomSheetTemplate = forwardRef<
 >(({ children }, ref) => {
 	const sheetRef = useRef<any>(null);
 	const snapPoints = useMemo(() => ["1%", "80%"], []);
-
-	const sheeViewHeight = useMemo(() => {
-		const heightPercentage = snapPoints[1].slice(0, snapPoints[1].length - 1);
-
-		return (
-			(Dimensions.get("window").height * parseFloat(heightPercentage)) / 100
-		);
-	}, [snapPoints[1]]);
 
 	const renderBackdrop = useCallback(
 		(props: BottomSheetBackdropProps) => (
@@ -47,7 +41,7 @@ export const DepositBottomSheetTemplate = forwardRef<
 		expand: () => sheetRef.current?.expand(),
 		collapse: () => sheetRef.current?.collapse(),
 		close: () => sheetRef.current?.close(),
-		getHeight: () => sheeViewHeight,
+		getHeight: () => sheetRef.current?.getHeight(),
 	}));
 
 	return (
@@ -68,6 +62,10 @@ export const DepositBottomSheetTemplate = forwardRef<
 			// enableHandlePanningGesture={true}
 			// enableContentPanningGesture={false}
 			// enablePanDownToClose={false}
+
+			handleIndicatorStyle={{
+				display: "flex",
+			}}
 		>
 			{children}
 		</BottomSheet>

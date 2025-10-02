@@ -24,15 +24,15 @@ enum TransferHolds {
 }
 
 enum LedgerTransactionType {
+  DEPOSIT
   WITHDRAW_PENDING
   WITHDRAW_SETTLED
-  TRANSFER
-  TRANSFER
-	DEPOSIT
-	WITHDRAW_FAILED
+  WITHDRAW_FAILED
+  TRANSFER_IN
+  TRANSFER_OUT
 }
 
-enum LedgerEntryAccoun {
+enum LedgerEntryAccount {
   WALLET
   SETTLEMENT
   FEE
@@ -46,12 +46,19 @@ enum TransferStatus {
   SETTLED
   FAILED
   COMPLETED
-  
 }
 
 enum TransferDestIdentifier {
   IBAN
-  card
+  CARD
+}
+
+
+enum LedgerStatus {
+  PENDING   
+  SETTLED   
+  FAILED    
+  CANCELED  
 }
 
 enum TransferType {
@@ -61,18 +68,19 @@ enum TransferType {
 }
 
 model User {
-  id              String         @id @default(uuid())
-  username        String?        @unique
+  id              String   @id @default(uuid())
+  userKey         String   @unique
+  username        String?  @unique
   profileImageUrl String?
-  phone           String         @unique
-  isActive        Boolean        @default(true)
-  isSuspended     Boolean        @default(false)
-  role            UserRole       @default(USER)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  refreshTokens   RefreshToken[]
+  phone           String   @unique
+  isActive        Boolean  @default(true)
+  isSuspended     Boolean  @default(false)
+  role            UserRole @default(USER)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  wallet Wallet? @relation
+  refreshTokens RefreshToken[]
+  accounts      Account[]      @relation("UserAccounts")
 
   @@index([createdAt])
   @@index([isActive, isSuspended])
@@ -94,91 +102,112 @@ model RefreshToken {
   @@index([expiresAt])
 }
 
+model Account {
+  id         String   @id @default(uuid())
+  accountKey String   @unique
+  userId     String
+  type       String   @default("PERSONAL") // PERSONAL | BUSINESS
+  status     String   @default("ACTIVE")
+  createdAt  DateTime @default(now())
+
+  user    User     @relation("UserAccounts", fields: [userId], references: [id])
+  wallets Wallet[]
+
+  @@index([userId])
+}
+
 model Wallet {
-  id            String   @id @default(uuid())
-  userId        String   @unique
-  balance       Decimal  @default(0.00)
-  cardNumber    String?  @unique
-  accountNumber String?  @unique
-  shabaNumber   String?  @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  isRemoved     Boolean  @default(false)
-
-  available    Decimal  @default(0.00) 
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String   @id @default(uuid())
+  walletKey       String   @unique
+  accountId       String   @unique
+  walletType      String
+  balance         Decimal  @default(0.00)
+  available       Decimal  @default(0.00)
+  currency        String   @default("IRR")
+  cardNumber      String?  @unique
+  accountNumber   String?  @unique
+  shabaNumber     String?  @unique
+  icon            String?
+  backgroundColor String?
+  name            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  isRemoved       Boolean  @default(false)
 
   ledgerEntries LedgerEntry[]
-  holds         Hold[]
+  holds         Hold[]        @relation("WalletHolds")
+  account       Account       @relation(fields: [accountId], references: [id])
 
+  @@index([walletKey])
+  @@index([accountId])
+  @@index([walletType])
   @@index([cardNumber])
   @@index([accountNumber])
   @@index([shabaNumber])
 }
 
-model Transfer {
-  id             String         @id @default(uuid())
-  idempotencyKey String?        @unique
-  type           TransferType
-  amount         BigInt
-  currency       String         @default("IRR")
-  sourceWalletId String
-  destIdentifier String?
-  status         TransferStatus @default(CREATED)
-  externalRef    String?
-  metadata       Json?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+model Hold {
+  id          String        @id @default(uuid())
+  holdKey     String        @unique
+  walletKey   String
+  amount      BigInt
+  status      TransferHolds @default(ACTIVE)
+  transferKey String?
+  createdAt   DateTime      @default(now())
+  expiresAt   DateTime?
 
-  @@index([idempotencyKey, type, id])
+  wallet Wallet @relation("WalletHolds", fields: [walletKey], references: [walletKey])
+
+  @@index([walletKey])
 }
 
-model Hold {
-  id         String        @id @default(uuid())
-  walletId   String
-  wallet     Wallet        @relation(fields: [walletId], references: [id])
-  amount     BigInt
-  status     TransferHolds @default(ACTIVE)
-  transferId String?
-  createdAt  DateTime      @default(now())
-  expiresAt  DateTime?
+model Transfer {
+  id                   String         @id @default(uuid())
+  transferKey          String         @unique
+  idempotencyKey       String        @unique
+  type                 TransferType
+  amount               BigInt
+  currency             String         @default("IRR")
+  sourceWalletKey      String
+  destinationWalletKey String
+  destIdentifier       String?
+  status               TransferStatus @default(CREATED)
+  externalRef          String?
+  metadata             Json?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 
-  @@index([walletId])
+  @@index([transferKey])
+  @@index([idempotencyKey])
 }
 
 model LedgerTransaction {
-  id            String        @id @default(uuid())
-  transferId    String?
-  type          String
-  createdAt     DateTime      @default(now())
+  id          String                @id @default(uuid())
+  ledgerTxKey String                @unique
+  transferKey String                @unique
+  type        LedgerTransactionType
+  createdAt   DateTime              @default(now())
+  status      LedgerStatus          @default(PENDING)
+  
   ledgerEntries LedgerEntry[]
 }
 
+
 model LedgerEntry {
-  id       String            @id @default(uuid())
-  txId     String
-  tx       LedgerTransaction @relation(fields: [txId], references: [id], onDelete: Cascade)
-  walletId String?
-  account  String
-  amount   BigInt
-  type     String
-  metadata Json?
+  id             String                @id @default(uuid())
+  ledgerEntryKey String                @unique
+  ledgerTxKey    String
+  walletKey      String?
+  account        LedgerEntryAccount
+  amount         BigInt
+  type           LedgerTransactionType
+  metadata       Json?
+  createdAt      DateTime              @default(now())
 
-  createdAt DateTime @default(now())
-  Wallet    Wallet?  @relation(fields: [walletId], references: [id])
+  ledgerTx LedgerTransaction @relation(fields: [ledgerTxKey], references: [ledgerTxKey], onDelete: Cascade)
+  wallet   Wallet?           @relation(fields: [walletKey], references: [walletKey])
 
-  @@index([walletId])
+  @@index([walletKey])
   @@index([account])
-}
-
-model OutboxEvent {
-  id            String    @id @default(uuid())
-  aggregateId   String?
-  aggregateType String?
-  type          String
-  payload       Json
-  processed     Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  processedAt   DateTime?
+  @@index([ledgerTxKey])
 }

@@ -1,10 +1,10 @@
-import { CustomButton } from "@/components/atoms/CustomButton";
-import { themeColors } from "@/constants/theme";
-import { globalStyles } from "@/styles/global";
 import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
 import Slider from "@react-native-community/slider";
 import { useCallback, useMemo, useState } from "react";
 import { Text, View } from "react-native";
+import { CustomButton } from "@/components/atoms/CustomButton";
+import { themeColors } from "@/constants/theme";
+import { globalStyles } from "@/styles/global";
 import { CardNumberBox } from "../CardNumberBox";
 import { mockCardNumbers } from "../CardNumberList/mock";
 
@@ -42,9 +42,16 @@ export const DepositForm = ({
 					</Text>
 					<InputBox />
 				</View>
-					<View style={{width:'100%', marginLeft:24, position: "absolute", bottom: 0 }}>
-						<CustomButton varient="dark" size="lg" title="تایید" />
-					</View>
+				<View
+					style={{
+						width: "100%",
+						marginLeft: 24,
+						position: "absolute",
+						bottom: 0,
+					}}
+				>
+					<CustomButton varient="dark" size="lg" title="تایید" />
+				</View>
 			</View>
 		</BottomSheetView>
 	);
@@ -56,7 +63,7 @@ const InputBox = () => {
 
 	const [inputWidth, setInputWidth] = useState(DEFAULT_VALUE_WIDTH);
 	const [numericValue, setNumericValue] = useState(
-		parseInt(DEFAULT_NUMERIC_VALUE),
+		Number(DEFAULT_NUMERIC_VALUE),
 	);
 	const [value, setValue] = useState("10,000,000");
 
@@ -86,7 +93,7 @@ const InputBox = () => {
 				thumbTintColor={themeColors.Primary}
 			/>
 		);
-	}, [numericValue]);
+	}, [numericValue, handleChange]);
 
 	return (
 		<>

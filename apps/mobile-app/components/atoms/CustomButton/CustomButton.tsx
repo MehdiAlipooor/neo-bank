@@ -1,8 +1,8 @@
-import { buttonSizes, buttonVarients, themRadius } from "@/constants/theme";
-import { FC } from "react";
+import type { FC } from "react";
 import { Pressable, Text } from "react-native";
+import { buttonSizes, buttonVarients, themRadius } from "@/constants/theme";
 import { styles } from "./styles";
-import { ButtonProps } from "./types";
+import type { ButtonProps } from "./types";
 
 export const CustomButton: FC<ButtonProps> = ({
 	children,

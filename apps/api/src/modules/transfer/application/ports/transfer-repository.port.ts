@@ -1,19 +1,23 @@
-import { Prisma } from "@prisma/client";
-import { TransferStatus } from "../../domain/enums/transfer-objects.enum";
-import { Transfer } from "../../domain/entities/transfer.entity";
+import type { Prisma, TransferStatus } from "@prisma/client";
+import type { Transfer } from "../../domain/entites/transfer.entity";
 
-export interface ITransferRepository {
-	create: (
+export interface TransferRepositoryPort {
+	create(
 		transfer: Transfer,
-		transactionRef: Prisma.TransactionClient,
-	) => Promise<Transfer>;
-	findByIdempotencyKey: (
-		key: string,
-		transaction: Prisma.TransactionClient,
-	) => Promise<Transfer | null>;
-	updateStatus: (key: string, status: TransferStatus) => Promise<void>;
+		idempotencyKey: string,
+		tx: Prisma.TransactionClient,
+	): Promise<Transfer>;
 
-	getTransaction: (
-		callback: (transaction: Prisma.TransactionClient) => void,
-	) => any;
+	updateStatus(
+		id: string,
+		status: TransferStatus,
+		tx: Prisma.TransactionClient,
+	): Promise<void>;
+
+	findById(id: string, status: TransferStatus): Promise<Transfer | null>;
+
+	existsByIdempotencyKey(
+		idempotencyKey: string,
+		tx: Prisma.TransactionClient,
+	): Promise<boolean>;
 }

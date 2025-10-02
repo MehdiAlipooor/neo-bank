@@ -1,7 +1,7 @@
+import type { FC } from "react";
+import { Pressable } from "react-native";
 import { CheckIcon } from "@/components/icons/Chcek";
 import { globalStyles } from "@/styles/global";
-import { FC } from "react";
-import { Pressable } from "react-native";
 import { styles } from "./styles";
 
 export type CheckButtonProps = {

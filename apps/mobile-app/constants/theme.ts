@@ -3,20 +3,13 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-import { ThemeColor } from "@/types/colors";
-import { ThemeRadius } from "@/types/radius";
-import { ThemeSize } from "@/types/size";
 import { Platform } from "react-native";
+import type { ThemeColor } from "@/types/colors";
+import type { ThemeRadius } from "@/types/radius";
+import type { ThemeSize } from "@/types/size";
 
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
-
-const buttonPadding = {
-	sm: 8,
-	md: 12,
-	lg: 16,
-	xl: 20,
-};
 
 export const buttonSizes: Record<
 	ThemeSize,
@@ -63,12 +56,14 @@ export const sizes: Record<ThemeRadius, number> = {
 	md: 8,
 	lg: 12,
 	xl: 16,
+	xlg: 24,
 };
 export const themRadius: Record<ThemeRadius, number> = {
 	sm: 4,
 	md: 8,
 	lg: 12,
 	xl: 16,
+	xlg: 24,
 };
 
 export const Colors = {

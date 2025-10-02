@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthScreen } from "./Auth";
 import { DepositScreen } from "./Deposit";
 import { MainScreen } from "./Main/Main.screen";
+import { TransferScreen } from "./Transfer/Transfer.screen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,12 +31,19 @@ const screens = {
 			gestureEnabled: true,
 		},
 	},
+	Transfer: {
+		component: TransferScreen,
+		options: {
+			lazy: true,
+			gestureEnabled: true,
+		},
+	},
 };
 
 export const Nav = () => {
 	return (
 		<Stack.Navigator
-			initialRouteName="Deposit"
+			initialRouteName="Transfer"
 			screenOptions={{
 				headerShown: false,
 				contentStyle: { flex: 1 },

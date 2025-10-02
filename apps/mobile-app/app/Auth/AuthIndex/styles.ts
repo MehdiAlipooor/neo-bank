@@ -1,5 +1,5 @@
-import { themeColors } from "@/constants/theme";
 import { StyleSheet } from "react-native";
+import { themeColors } from "@/constants/theme";
 
 export const styles = StyleSheet.create({
 	wrapper: {
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
 		color: themeColors.dark,
 		fontSize: 35,
 		textAlign: "right",
-		fontFamily: "bold",
+		fontFamily: "modamBold",
 	},
 	subText: {
 		color: "#5d5d66",
@@ -40,12 +40,12 @@ export const styles = StyleSheet.create({
 		flex: 1,
 	},
 	loginTitle: {
-		fontSize: 38,
+		fontSize: 32,
 		color: themeColors.dark,
 		marginBottom: 24,
 		fontWeight: 600,
 		textAlign: "right",
-		fontFamily: "bold",
+		fontFamily: "modamBold",
 		width: 260,
 	},
 	brandText: {

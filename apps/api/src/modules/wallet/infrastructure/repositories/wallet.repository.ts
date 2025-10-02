@@ -1,67 +1,93 @@
-import { PrismaClient } from "@prisma/client";
-import type { IWalletRepository } from "../../application/ports/wallet-repository.port";
-import { Wallet } from "../../domain/entities/wallet";
-import { Money } from "../../domain/value-objects/Money";
+import prisma from "../../../../../lib/db/prisma";
+import type { WalletRepositoryPort } from "../../application/ports/wallet-repository.port";
+import { MainWallet } from "../../domain/entities/main-wallet.entity";
+import type { Wallet } from "../../domain/entities/wallet";
+import { Money } from "../../domain/value-objects/money.value-object";
 
-const prisma = new PrismaClient();
-
-export class WalletRepository implements IWalletRepository {
+export class WalletRepository implements WalletRepositoryPort {
 	async create(wallet: Wallet): Promise<Wallet> {
-		console.log(wallet);
 		const record = await prisma.wallet.create({
 			data: {
-				id: wallet.id,
-				userId: wallet.userId,
-				balance: wallet.getBalance(),
+				walletKey: wallet.walletKey,
+				accountId: wallet.accountId,
+				walletType: wallet.walletType,
+				balance: wallet.balance.value,
+				available: wallet.available.value,
 			},
 		});
 
-		return new Wallet(
-			record.id,
-			record.userId,
-			Number(record.balance),
-			new Money(0),
-		);
-	}
-
-	async findById(id: string): Promise<Wallet | null> {
-		const record = await prisma.wallet.findUnique({ where: { id } });
-		if (!record) {
-			return null;
-		}
-
-		return new Wallet(
-			record.id,
-			record.userId,
-			Number(record.balance),
+		return new MainWallet(
+			record.walletKey,
+			record.accountId,
+			new Money(Number(record.balance)),
 			new Money(Number(record.available)),
 		);
 	}
 
-	async findByUserId(userId: string): Promise<Wallet | null> {
-		const record = await prisma.wallet.findUnique({ where: { userId } });
+	async findByWalletKey(walletKey: string): Promise<MainWallet | null> {
+		const record = await prisma.wallet.findUnique({
+			where: { walletKey },
+		});
 		if (!record) {
 			return null;
 		}
 
-		return new Wallet(
-			record.id,
-			record.userId,
-			Number(record.balance),
+		return new MainWallet(
+			record.walletKey,
+			record.accountId,
+			new Money(Number(record.balance)),
 			new Money(Number(record.available)),
 		);
 	}
 
-	async update(wallet: Wallet): Promise<Wallet> {
+	async findById(id: string): Promise<MainWallet | null> {
+		const record = await prisma.wallet.findUnique({
+			where: { id },
+		});
+		if (!record) {
+			return null;
+		}
+
+		return new MainWallet(
+			record.walletKey,
+			record.accountId,
+			new Money(Number(record.balance)),
+			new Money(Number(record.available)),
+		);
+	}
+
+	async findByUserId(accountId: string): Promise<MainWallet | null> {
+		const record = await prisma.wallet.findUnique({
+			where: { accountId },
+		});
+		if (!record) {
+			return null;
+		}
+
+		return new MainWallet(
+			record.walletKey,
+			record.accountId,
+			new Money(Number(record.balance)),
+			new Money(Number(record.available)),
+		);
+	}
+
+	async update(wallet: MainWallet): Promise<MainWallet> {
 		const record = await prisma.wallet.update({
-			where: { id: wallet.id },
-			data: { balance: wallet.getBalance() },
+			where: { walletKey: wallet.walletKey },
+			data: {
+				walletKey: wallet.walletKey,
+				accountId: wallet.accountId,
+				walletType: wallet.walletType,
+				balance: wallet.balance.value,
+				available: wallet.available.value,
+			},
 		});
 
-		return new Wallet(
-			record.id,
-			record.userId,
-			Number(record.balance),
+		return new MainWallet(
+			record.walletKey,
+			record.accountId,
+			new Money(Number(record.balance)),
 			new Money(Number(record.available)),
 		);
 	}

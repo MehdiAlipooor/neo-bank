@@ -1,5 +1,5 @@
-import type { RefreshToken } from "../../domain/entities/RefreshToken";
 import prisma from "../../../../../lib/db/prisma";
+import type { RefreshToken } from "../../domain/entities/RefreshToken";
 
 export class RefreshTokenRepository {
 	async save(token: RefreshToken): Promise<void> {

@@ -1,5 +1,5 @@
-import { themRadius } from "@/constants/theme";
 import { StyleSheet } from "react-native";
+import { themRadius } from "@/constants/theme";
 
 export const styles = StyleSheet.create({
 	listWrapper: {

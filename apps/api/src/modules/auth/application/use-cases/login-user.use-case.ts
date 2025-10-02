@@ -1,4 +1,6 @@
-import { CreateWallet } from "../../../wallet/application/use-cases/create-wallet";
+import { randomUUID } from "node:crypto";
+import { CreateAccount } from "../../../account/application/use-cases/create-account.use-case";
+import { CreateWallet } from "../../../wallet/application/use-cases/create-wallet.use-case";
 import { WalletRepository } from "../../../wallet/infrastructure/repositories/wallet.repository";
 import { User } from "../../domain/entities/User";
 import { Phone } from "../../domain/value-objects/Phone";
@@ -6,6 +8,7 @@ import type { IAuthRepository } from "../ports/IAuthRepository";
 import type { IssueTokensUseCase } from "./issue-token.use-case";
 
 const walletRepo = new WalletRepository();
+const createAccountUseCase = new CreateAccount();
 
 export class LoginUserUseCase {
 	constructor(
@@ -36,13 +39,20 @@ export class LoginUserUseCase {
 		 * @description If no user, the user will be generated, and an empty wallet will be generated too
 		 */
 		if (!user) {
-			const userSchema = User.create(username, phone.getValue());
+			const userSchema = User.create(username, phone.getValue(), randomUUID());
 			await this.authRepo.save(userSchema);
+
 			user = userSchema as User;
 
-			// Step 3: create wallet for persisted user
+			const account = await createAccountUseCase.execute(user.id);
 			const createWallet = new CreateWallet(walletRepo);
-			await createWallet.execute({ userId: user.id });
+
+			await createWallet.execute({
+				accountId: account.accountId,
+				userId: user.id,
+				walletName: "",
+				walletKey: randomUUID(),
+			});
 		}
 
 		const tokens = await this.issueTokenUseCase.execute((user as User)?.id);

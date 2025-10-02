@@ -75,6 +75,21 @@
 										"weight": 700
 									}
 								]
+							},
+							{
+								"fontFamily": "Modam",
+								"fontDefinitions": [
+									{
+										"path": "./assets/fonts/modam/ttf/ModamFaNumWeb-Bold.ttf",
+										"weight": 800,
+										"style": "italic"
+									},
+									{
+										"path": "./assets/fonts/danaPro/ttf/ModamFaNumWeb-Bold.ttf",
+										"weight": 500,
+										"style": "italic"
+									}
+								]
 							}
 						]
 					}

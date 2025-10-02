@@ -3,6 +3,7 @@ import { RoleTypes } from "../enums/RoleTypes";
 export class User {
 	constructor(
 		public readonly id: string,
+		public readonly accountId: string,
 		public readonly username: string,
 		public readonly profileImageUrl: string,
 		public readonly phone: string,
@@ -13,7 +14,7 @@ export class User {
 		public updatedAt: Date = new Date(),
 	) {}
 
-	static create(username: string, phone: string): User {
+	static create(username: string, phone: string, accountId: string): User {
 		const id = crypto.randomUUID();
 		const isActive = true;
 		const isSuspended = false;
@@ -22,6 +23,7 @@ export class User {
 
 		return new User(
 			id,
+			accountId,
 			username,
 			profileImageUrl,
 			phone,
